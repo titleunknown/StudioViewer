@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lfs-viewer",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-u", "lfs_viewer.py", "--port", "8790", "--no-open", "--local", "--settings", ".claude/test-settings.json"],
+      "port": 8790
+    }
+  ]
+}

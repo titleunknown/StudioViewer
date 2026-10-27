@@ -1,0 +1,87 @@
+<!doctype html>
+<!--
+  LfS Web Viewer: the page remote visitors see first. Made by Faini Made (https://fainimade.com).
+  lfs_viewer.py serves it on the tunnel port until the viewing code is entered (see "Remote" at the
+  top of that file), naming whoever runs it as set in the LfS app ("Visitors see you as"; the
+  double-braced placeholder below). The code goes to POST /api/view, which sets a cookie; then the
+  viewer loads.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#18191c">
+<meta name="robots" content="noindex">
+<title>LfS Web Viewer</title>
+<style>
+  :root {
+    --bg: #111214;
+    --panel: #18191c;
+    --line: #2a2c31;
+    --text: #e8e8ea;
+    --muted: #8b8d94;
+    --accent: #e0a63a;
+    --bad: #e05a4f;
+    --ctl-border: #70737b;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    display: grid; place-items: center; padding: 16px; min-height: 100dvh;
+  }
+  form {
+    width: min(340px, 100%); background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px 22px 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
+  }
+  h1 { font-size: 18px; margin: 0 0 6px; }
+  p { margin: 0 0 8px; color: var(--muted); }
+  input {
+    width: 100%; font: 24px/1.2 ui-monospace, Menlo, monospace; letter-spacing: .3em; text-align: center;
+    padding: 10px; margin: 8px 0 2px; background: var(--bg); color: var(--text);
+    border: 1px solid var(--ctl-border); border-radius: 8px;
+  }
+  .error { color: var(--bad); min-height: 1.4em; margin: 6px 0 0; }
+  button {
+    width: 100%; margin-top: 10px; padding: 10px; font: inherit; font-weight: 600; cursor: pointer;
+    background: var(--accent); border: 1px solid var(--accent); color: #111; border-radius: 8px;
+  }
+  button:disabled { opacity: .6; cursor: default; }
+</style>
+</head>
+<body>
+<form id="form">
+  <h1>Live view</h1>
+  <p>Enter the viewing code {{operator}} gave you.</p>
+  <input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="12" pattern="\d*"
+         aria-label="Viewing code" autofocus>
+  <p id="error" class="error" role="alert"></p>
+  <button id="go">View</button>
+</form>
+<script>
+const form = document.getElementById("form"), code = document.getElementById("code");
+const error = document.getElementById("error"), go = document.getElementById("go");
+form.onsubmit = async (e) => {
+  e.preventDefault();
+  go.disabled = true;
+  error.textContent = "";
+  try {
+    const r = await fetch("/api/view", {
+      method: "POST",
+      headers: { "X-LfS": "1", "Content-Type": "application/json" },
+      body: JSON.stringify({ code: code.value.trim() }),
+    });
+    if (r.ok) { location.reload(); return; }
+    error.textContent = (await r.json().catch(() => ({}))).error || "Wrong code.";
+  } catch {
+    error.textContent = "The viewer isn't reachable. Try again in a moment.";
+  }
+  go.disabled = false;
+  code.select();
+};
+</script>
+</body>
+</html>

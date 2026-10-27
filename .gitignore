@@ -1,0 +1,15 @@
+.DS_Store
+__pycache__/
+xcuserdata/
+
+# The viewer's own settings when run from the .command launcher (PIN, codes, secrets).
+/settings.json
+/.claude/test-settings.json
+
+# Fetched by App/scripts/fetch-python.sh and fetch-cloudflared.sh (VERSION and LICENSE are kept).
+/App/Python/python/
+/App/Cloudflared/cloudflared
+
+# Builds and releases.
+/App/build/
+/App/LfS releases/
