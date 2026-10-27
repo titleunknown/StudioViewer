@@ -583,6 +583,7 @@ The double-click launcher passes options through too. For example, run
 | `remote-setup.html` | The step-by-step guide to sharing outside the studio through Cloudflare. |
 | `App/` | The StudioViewer menu bar app (Xcode project; see `App/README.md`). It bundles `studio_viewer.py`, `viewer.html`, `gate.html` and `remote-setup.html`. |
 | `settings.json` | For the launcher and Terminal: your **Network access** choice, PIN, wrong-PIN limits and remote viewing code. Created on first run; delete it to reset to "View only". The app keeps its own, in `~/Library/Application Support/StudioViewer/`. |
+| `tests/` | The engine's tests and a fake Capture One (see `App/README.md`, "Testing the engine"). |
 | `README.md` | This guide. |
 
 ### How it works

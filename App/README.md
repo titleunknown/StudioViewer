@@ -124,6 +124,7 @@ give-up with a wrong token (cloudflared's behaviour with one was checked on its 
 Hidden setting for troubleshooting and tests:
 `defaults write Faini-Made.StudioViewer captureOneAddress 127.0.0.1:PORT` makes the viewer use that
 Capture One address (`--c1`); `defaults delete Faini-Made.StudioViewer captureOneAddress` undoes it.
+`tests/stub_c1.py` is a fake Capture One to point it at (no photos).
 
 ## Icon
 
@@ -157,7 +158,36 @@ Python-update builds). Without `App/Python/`, the build says so and the app uses
 
 It is Apple Silicon only. Intel Macs would need the x86_64 build merged in with `lipo`.
 
+## Testing the engine
+
+The engine (`studio_viewer.py`) has its own tests, in `tests/` at the top of the project. Run them
+after changing the engine, and before a release, with both Pythons:
+
+```sh
+python3 -I tests/test_engine.py
+App/Python/python/bin/python3 -I tests/test_engine.py
+python3 -I tests/test_devices.py
+```
+
+- `test_engine.py` (about 40 s) runs a fake Capture One and the engine the way the app does
+  (`--control`), and drives it over stdin/stdout and HTTP: the control protocol and its `@sv`
+  events, the `X-StudioViewer` header, the viewing code and PIN and their lockouts, the global cap
+  on remote guesses, devices (remove, unblock, stop rating, data counted), visitors' wording (HTML
+  escaped), Capture One going away and back, opening and closing the tunnel port, a taken port,
+  output nobody reads, stopping by command, stdin closing and SIGTERM (five at random moments),
+  and plain script mode. It uses ports 8795, 8796 and 8799 and a settings file in a temporary
+  folder, so it doesn't touch the app's settings; a running app on 8787/8797 doesn't get in the way.
+- `test_devices.py` (a few seconds) checks the Viewers panel's list on its own, with short time
+  limits: leaving, coming back as a new visit, removed devices, forgetting.
+
+Both print PASS/FAIL per check and exit non-zero on any failure. 2026-10-26: 83/83 and 5/5 on
+this Mac's Python 3 and the bundled 3.13.16. (The harness was first written as a scratch file on
+2026-10-20 and recovered into the project after the rename; the one check that needed changing
+was for a `requests` count the engine no longer reports.)
+
 ## Releasing
+
+Run the engine tests first (above). Then:
 
 ```sh
 App/scripts/release.sh
