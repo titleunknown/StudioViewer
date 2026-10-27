@@ -90,7 +90,7 @@ The app runs the viewer for you and lives in the **menu bar**. Its menu:
 | **Ratings & Tags** | Who else can rate and tag, the PIN, and how many wrong PINs are allowed. See [Who can rate and tag](#who-can-rate-and-tag). |
 | **Settings** | Start the viewer when the app opens, open at login, the Dock icon, the port, "only this Mac", what visitors' pages call you, and notifications. |
 | **Log** | What the viewer has been doing, with **Copy Log** for asking for help. |
-| **About** | Version, **Check for Updates…**, the software policy and the privacy policy. |
+| **About** | Version, **Check for Updates…**, the privacy policy, and a link to support StudioViewer. |
 
 Closing the window leaves the app running in the menu bar. It sends a **notification** if Capture One
 stops answering, if the viewer stops unexpectedly (with a **Restart** button), if someone keeps guessing

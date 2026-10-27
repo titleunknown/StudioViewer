@@ -28,7 +28,7 @@ enum AppInfo {
     }
 }
 
-/// About StudioViewer: icon, version, Faini Made, the software and privacy policies and the licences of what's bundled.
+/// About StudioViewer: icon, version, Faini Made, the privacy policy, support and the licences of what's bundled.
 /// Laid out like PortScope's About tab.
 struct AboutView: View {
     @State private var updateChecker = UpdateChecker.shared
@@ -52,9 +52,6 @@ struct AboutView: View {
 
             Link("by Faini Made", destination: URL(string: "https://fainimade.com")!)
                 .help("fainimade.com")
-            Link("Faini Made Software Policy", destination: URL(string: "https://fainimade.com/software-policy")!)
-                .font(.subheadline)
-                .help("fainimade.com/software-policy")
             Link("Privacy Policy", destination: URL(string: "https://fainimade.com/privacy")!)
                 .font(.subheadline)
                 .help("fainimade.com/privacy")
@@ -100,16 +97,10 @@ struct AboutView: View {
                 Toggle("Check for updates automatically", isOn: $autoCheckUpdates)
                     .toggleStyle(.checkbox)
                     .font(.subheadline)
+                    .help("Asks GitHub once a day while StudioViewer is running. Nothing about your Mac is sent.")
                     .onChange(of: autoCheckUpdates) { _, on in
                         if on { updateChecker.check(automatic: true) }
                     }
-                Text(autoCheckUpdates
-                     ? "Asks GitHub once a day while StudioViewer is running. Nothing about your Mac is sent."
-                     : "Off: StudioViewer only looks when you press the button.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Divider().padding(.vertical, 4)
