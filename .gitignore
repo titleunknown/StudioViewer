@@ -4,7 +4,6 @@ xcuserdata/
 
 # The viewer's own settings when run from the .command launcher (PIN, codes, secrets).
 /settings.json
-/.claude/test-settings.json
 
 # Fetched by App/scripts/fetch-python.sh and fetch-cloudflared.sh (VERSION and LICENSE are kept).
 /App/Python/python/
@@ -13,3 +12,6 @@ xcuserdata/
 # Builds and releases.
 /App/build/
 /App/LfS releases/
+
+# Claude Code's local config (dev server for the browser pane).
+/.claude/

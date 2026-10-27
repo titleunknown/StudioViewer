@@ -59,6 +59,24 @@ struct AboutView: View {
                 .font(.subheadline)
                 .help("fainimade.com/privacy")
 
+            // StudioViewer is free: this is the way to support it (the README has the same link).
+            Text("StudioViewer is free. If it earns its keep on your shoots:")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 4)
+            Link(destination: URL(string: "https://buymeacoffee.com/fainimade")!) {
+                Label("Buy Me a Coffee", systemImage: "cup.and.saucer.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.black)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 6)
+                    .background(Color(red: 1, green: 0.867, blue: 0), in: Capsule())  // Buy Me a Coffee's yellow
+            }
+            .buttonStyle(.plain)
+            .help("buymeacoffee.com/fainimade")
+
             Divider().padding(.vertical, 4)
 
             VStack(spacing: 6) {

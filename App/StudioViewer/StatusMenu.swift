@@ -8,7 +8,7 @@ import SwiftUI
 /// SwiftUI views hosted in menu items, so they update live while the menu is open.
 ///
 ///     [StudioViewer                       (on)]   Live · 4 watching · StudioViewer - Demo
-///     [Share Outside the Studio         (on)]   view.fainimade.com · 2 remote
+///     [Share Outside the Studio         (on)]   studio.example.com · 2 remote
 ///     Open Viewer in Browser             ⌘O
 ///     Addresses                           ›
 ///     Open StudioViewer Window
@@ -127,7 +127,7 @@ final class StatusMenu: NSObject, NSMenuDelegate {
     }
 
     /// The network addresses, then the remote one when sharing is connected, each with a short label:
-    /// "Wi-Fi: 192.168.8.165:8787", "Remote: view.fainimade.com".
+    /// "Wi-Fi: 192.168.1.20:8787", "Remote: studio.example.com".
     private func shareable(_ urls: ViewerURLs) -> [(title: String, url: String)] {
         var list = Address.shareable(urls).map { (title: "\(Self.shortLabel($0.label)): \(Self.hostPart($0.url))", url: $0.url) }
         if tunnel.isConnected, let url = tunnel.publicURL {
@@ -145,7 +145,7 @@ final class StatusMenu: NSObject, NSMenuDelegate {
         return name
     }
 
-    /// "http://192.168.8.165:8787" -> "192.168.8.165:8787"
+    /// "http://192.168.1.20:8787" -> "192.168.1.20:8787"
     nonisolated static func hostPart(_ url: String) -> String {
         url.replacingOccurrences(of: #"^https?://"#, with: "", options: .regularExpression)
     }

@@ -8,7 +8,8 @@ StudioViewer connects to that same feature and shows it in a web browser instead
 on your network can follow along, zoom in to check focus, and (if you allow it) rate and
 color-tag photos.
 
-*Made by [Faini Made](https://fainimade.com).*
+*Made by [Faini Made](https://fainimade.com). Free to use; if it earns its keep on your shoots,
+you can [buy me a coffee](#support).*
 
 ---
 
@@ -27,6 +28,7 @@ color-tag photos.
 11. [If something goes wrong](#if-something-goes-wrong)
 12. [Good to know](#good-to-know)
 13. [For the technically minded](#for-the-technically-minded)
+14. [Support](#support)
 
 ---
 
@@ -118,7 +120,7 @@ macOS may ask a few questions the first time. Here's what to click:
 
 ```
   On this Mac:      http://localhost:8787
-  On your network:  http://192.168.8.185:8787   (en15)
+  On your network:  http://192.168.1.20:8787   (en15)
   Apple devices:    http://Faini-book-14.local:8787
 ```
 
@@ -641,6 +643,18 @@ The viewer introduces itself to Capture One as the Live for Studio iPad app, ver
 If a Capture One update rejects that ("refused the connection" in Terminal), set `APP_VERSION`
 near the top of `studio_viewer.py` to the current version of the Live for Studio iPad app (shown
 in the App Store), then start the viewer again.
+
+---
+
+## Support
+
+StudioViewer is free. If you find it useful, consider supporting its development:
+
+<p align="center">
+  <a href="https://buymeacoffee.com/fainimade">
+    <img src="https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee" />
+  </a>
+</p>
 
 ---
 
