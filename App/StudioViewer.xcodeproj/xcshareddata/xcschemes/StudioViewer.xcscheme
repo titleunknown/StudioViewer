@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4C0F00000000000000000071"
-               BuildableName = "LfS Viewer.app"
-               BlueprintName = "LfS Viewer"
-               ReferencedContainer = "container:LfSViewer.xcodeproj">
+               BuildableName = "StudioViewer.app"
+               BlueprintName = "StudioViewer"
+               ReferencedContainer = "container:StudioViewer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C0F00000000000000000071"
-            BuildableName = "LfS Viewer.app"
-            BlueprintName = "LfS Viewer"
-            ReferencedContainer = "container:LfSViewer.xcodeproj">
+            BuildableName = "StudioViewer.app"
+            BlueprintName = "StudioViewer"
+            ReferencedContainer = "container:StudioViewer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -60,9 +60,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C0F00000000000000000071"
-            BuildableName = "LfS Viewer.app"
-            BlueprintName = "LfS Viewer"
-            ReferencedContainer = "container:LfSViewer.xcodeproj">
+            BuildableName = "StudioViewer.app"
+            BlueprintName = "StudioViewer"
+            ReferencedContainer = "container:StudioViewer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

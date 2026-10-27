@@ -1,9 +1,9 @@
 import Foundation
 import Observation
 
-/// Runs the viewer itself (lfs_viewer.py, bundled in the app) as a child process in --control mode,
-/// and mirrors what it reports. The protocol is documented at the top of lfs_viewer.py ("Control"):
-/// events arrive on its stdout as lines starting with "@lfs ", commands go to its stdin as JSON lines.
+/// Runs the viewer itself (studio_viewer.py, bundled in the app) as a child process in --control mode,
+/// and mirrors what it reports. The protocol is documented at the top of studio_viewer.py ("Control"):
+/// events arrive on its stdout as lines starting with "@sv ", commands go to its stdin as JSON lines.
 @Observable
 final class Engine {
     enum Phase: Equatable {
@@ -22,7 +22,7 @@ final class Engine {
     private(set) var session = ""
     private(set) var urls: ViewerURLs?
     private(set) var viewers = Viewers()
-    /// Connected and removed devices, for the Viewers panel (see Devices in lfs_viewer.py).
+    /// Connected and removed devices, for the Viewers panel (see Devices in studio_viewer.py).
     private(set) var devices: [Device] = []
     private(set) var settings: AccessSettings?
     private(set) var log: [String] = []
@@ -78,8 +78,8 @@ final class Engine {
             onAlert(.crashed(failure!))
             return
         }
-        guard let script = Bundle.main.url(forResource: "lfs_viewer", withExtension: "py") else {
-            failure = "The app is missing lfs_viewer.py. Reinstall LfS Viewer."
+        guard let script = Bundle.main.url(forResource: "studio_viewer", withExtension: "py") else {
+            failure = "The app is missing studio_viewer.py. Reinstall StudioViewer."
             return
         }
         let options = LaunchOptions.current
@@ -90,7 +90,7 @@ final class Engine {
                        "--settings", Paths.settings.path, "--port", String(options.port)]
             + (options.localOnly ? ["--local"] : [])
         // Hidden, for troubleshooting and tests: a Capture One address to use instead of finding it.
-        //     defaults write Faini-Made.LfS-Viewer captureOneAddress 127.0.0.1:50163
+        //     defaults write Faini-Made.StudioViewer captureOneAddress 127.0.0.1:50163
         if let c1 = UserDefaults.standard.string(forKey: Prefs.captureOneAddress), !c1.isEmpty {
             p.arguments! += ["--c1", c1]
             append("Using Capture One at \(c1) (captureOneAddress setting)")
@@ -249,11 +249,12 @@ final class Engine {
     // MARK: Events
 
     private static let decoder = JSONDecoder()
+    private static let eventPrefix = "@sv "
 
     private func handle(_ line: String) {
         // One decoding pass per line, straight into the event's fields.
-        guard line.hasPrefix("@lfs "),
-              let event = try? Self.decoder.decode(ViewerEvent.self, from: Data(line.utf8.dropFirst(5)))
+        guard line.hasPrefix(Self.eventPrefix),
+              let event = try? Self.decoder.decode(ViewerEvent.self, from: Data(line.utf8.dropFirst(Self.eventPrefix.utf8.count)))
         else {
             append(line)
             return
@@ -308,8 +309,8 @@ final class Engine {
 
 // MARK: - What the viewer reports
 
-/// One "@lfs {...}" line from the viewer: every event's fields, each there only for its own events
-/// (see "Control" at the top of lfs_viewer.py).
+/// One "@sv {...}" line from the viewer: every event's fields, each there only for its own events
+/// (see "Control" at the top of studio_viewer.py).
 private struct ViewerEvent: Decodable {
     var event: String
     var state: String?
@@ -368,7 +369,7 @@ struct ViewerURLs: Codable, Equatable {
     var bonjour: String?
 }
 
-/// A browser watching (or removed from) the viewer, as lfs_viewer.py reports it.
+/// A browser watching (or removed from) the viewer, as studio_viewer.py reports it.
 struct Device: Codable, Identifiable, Equatable {
     enum Place: String, Codable {
         case thisMac = "this-mac", network, remote

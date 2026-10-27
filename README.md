@@ -1,10 +1,10 @@
-# LfS Web Viewer
+# StudioViewer
 
 See your Capture One shoot live in any web browser, on this Mac, on a client monitor, or on a
 phone, tablet or laptop in the studio. No iPad app needed.
 
 Capture One's **Live for Studio** feature shares your session with the Live for Studio iPad app.
-LfS Web Viewer connects to that same feature and shows it in a web browser instead, so anyone
+StudioViewer connects to that same feature and shows it in a web browser instead, so anyone
 on your network can follow along, zoom in to check focus, and (if you allow it) rate and
 color-tag photos.
 
@@ -16,7 +16,7 @@ color-tag photos.
 
 1. [What you need](#what-you-need)
 2. [Starting the viewer](#starting-the-viewer)
-3. [The LfS Viewer app](#the-lfs-viewer-app)
+3. [The StudioViewer app](#the-studioviewer-app)
 4. [The first time only](#the-first-time-only)
 5. [Opening it on a phone, tablet or another computer](#opening-it-on-a-phone-tablet-or-another-computer)
 6. [Finding your way around](#finding-your-way-around)
@@ -34,7 +34,7 @@ color-tag photos.
 
 - **A Mac with Capture One**, with your session open. (Tested with Capture One 16.7.3.)
 - **Live for Studio turned on** in Capture One (see step 1 below).
-- **The LfS Viewer app** (macOS 15 or later), or **this folder** with the double-click launcher.
+- **The StudioViewer app** (macOS 15 or later), or **this folder** with the double-click launcher.
   The folder can live anywhere, for example in Google Drive or your Documents folder.
 - **Python 3**, only for the double-click launcher: the app has its own built in. Most Macs already
   have it. If yours doesn't, macOS offers to install it the first time. See
@@ -53,10 +53,10 @@ Do this each time you want to use the viewer.
 
 2. **Start the viewer**, in one of two ways:
 
-   - **With the LfS Viewer app** (easiest): click its icon in the menu bar (an eye) and switch on
-     **LfS Viewer**. Or open the window and click **Start**. The switch shows "Live" once Capture One
+   - **With the StudioViewer app** (easiest): click its icon in the menu bar (an eye) and switch on
+     **StudioViewer**. Or open the window and click **Start**. The switch shows "Live" once Capture One
      answers. To stop, switch it off.
-   - **With the double-click launcher:** double-click `Start LfS Viewer.command` in this folder. A
+   - **With the double-click launcher:** double-click `Start StudioViewer.command` in this folder. A
      Terminal window opens (a plain window with text in it) and a moment later your web browser opens
      the viewer. **Leave the Terminal window open** while you use the viewer (you can minimize it);
      **close it when you're done**, which stops the viewer.
@@ -66,17 +66,17 @@ Do this each time you want to use the viewer.
 
 ---
 
-## The LfS Viewer app
+## The StudioViewer app
 
 The app runs the viewer for you and lives in the **menu bar**. Its menu:
 
 | Item | What it does |
 |---|---|
-| **LfS Viewer** switch | Starts or stops the viewer. Under it: Live, how many are watching and the session name. |
+| **StudioViewer** switch | Starts or stops the viewer. Under it: Live, how many are watching and the session name. |
 | **Share Outside the Studio** switch | Remote sharing on or off (once it's set up; see [Sharing outside the studio](#sharing-outside-the-studio-remote-clients)). Under it: your address and how many are watching remotely. |
 | **Open Viewer in Browser** (⌘O) | Opens the viewer on this Mac. |
 | **Addresses** | Each address to give other devices, to copy, show as a QR code, or open. |
-| **Open LfS Viewer Window** | The window, below. |
+| **Open StudioViewer Window** | The window, below. |
 
 **The window** has the big **Start / Stop** button and status at the top, and these panels on the left:
 
@@ -102,7 +102,7 @@ macOS may ask a few questions the first time. Here's what to click:
 
 | macOS says… | Click |
 |---|---|
-| "Start LfS Viewer.command" **can't be opened** or is from an **unidentified developer** | **Right-click** the file, choose **Open**, then click **Open** again. After that, a normal double-click works. |
+| "Start StudioViewer.command" **can't be opened** or is from an **unidentified developer** | **Right-click** the file, choose **Open**, then click **Open** again. After that, a normal double-click works. |
 | Terminal would like to access files in **Google Drive** (or another folder) | **Allow** |
 | Do you want **python3** to accept **incoming network connections**? | **Allow**. This lets phones and other computers reach the viewer. |
 | The **"python3" command requires the command line developer tools.** Install them now? | **Install**, wait for it to finish (a few minutes), then double-click the launcher again. |
@@ -259,7 +259,7 @@ Click **Filter** to show the bar:
   **Enter PIN to rate…** on other devices when a PIN is set. When the app runs the viewer, Network
   access is set in the app's **Ratings & Tags** panel instead.
 - **Fullscreen mode** (press **P**): the clean client view. See the next section.
-- **Connection details…**, **Take the tour…**, **Keyboard shortcuts** and **About LfS Web Viewer**.
+- **Connection details…**, **Take the tour…**, **Keyboard shortcuts** and **About StudioViewer**.
 - At the very bottom, the **session** name and this browser tab's **client ID** (the random ID the
   tab identifies itself with; select and copy it if you need to quote it when asking for help).
 
@@ -357,7 +357,7 @@ full screen and fullscreen mode together.
 
 ## Sharing outside the studio (remote clients)
 
-With the **LfS Viewer app** (in the `App` folder), people who aren't in the studio can watch too, from
+With the **StudioViewer app** (in the `App` folder), people who aren't in the studio can watch too, from
 anywhere, through Cloudflare. It's free, nothing is opened on your router, and every remote visitor
 needs a **viewing code** you choose.
 
@@ -384,15 +384,15 @@ There are two ways to share:
 3. **Create a tunnel:** **Networking › Tunnels › Create a tunnel**, name it, choose **macOS**, and copy the
    install command shown. Don't run it: paste it into **Tunnel token** in the app's **Remote Sharing**
    panel and click **Save**.
-4. **Connect:** with a viewing code saved, switch on **Share outside the studio** in LfS Viewer. When the
+4. **Connect:** with a viewing code saved, switch on **Share outside the studio** in StudioViewer. When the
    dashboard shows the tunnel connected, select **Continue**.
 5. **Publish your address:** in the tunnel's **Routes** tab, **Add route › Published application**. Choose a
    subdomain such as `view` and your domain, and set **Service URL** to **`http://localhost:8797`**
-   (exactly that, including `http://`). Then type the full address into **Public address** in LfS Viewer.
+   (exactly that, including `http://`). Then type the full address into **Public address** in StudioViewer.
 6. **Test** on your phone with Wi-Fi off: the address asks for the viewing code, then shows the live view.
 
 Remote visitors can look, zoom and filter, and rate or tag only if you allow it (see
-[Who can rate and tag](#who-can-rate-and-tag)). The link works while LfS Viewer is running and your Mac
+[Who can rate and tag](#who-can-rate-and-tag)). The link works while StudioViewer is running and your Mac
 is awake.
 
 **Who's watching:** the app's **Viewers** panel lists every browser connected right now:
@@ -502,7 +502,7 @@ Press **?** in the viewer to see this list at any time.
 | The app or Terminal says **"Waiting for Capture One…"** | Open Capture One and turn on Live for Studio (**Start Sharing**). The viewer connects by itself. |
 | **No folders or photos** appear | In Capture One's Live for Studio tool, check which folder is shared. The viewer shows only what's shared there. |
 | A **new photo doesn't appear** | Check that it went into the shared folder (or one inside it), that **Follow** is on, and that no filter is hiding it (a dot on **Filter** means a filter is on). Follow may take 2–3 seconds to switch folders. |
-| The page says **"Viewer script isn't running"** | The viewer was stopped. Switch it on again in the app's menu (or, with the launcher, the Terminal window was closed: double-click `Start LfS Viewer.command` again), then reload the page. |
+| The page says **"Viewer script isn't running"** | The viewer was stopped. Switch it on again in the app's menu (or, with the launcher, the Terminal window was closed: double-click `Start StudioViewer.command` again), then reload the page. |
 | The dot is **red** and says Capture One didn't answer | Capture One may be busy importing or was closed. It reconnects by itself; if not, check that Live for Studio is still sharing. |
 | A **phone or tablet can't open** the address | Check it's on the same Wi-Fi as the Mac, and that the app's **Settings › Only this Mac can open the viewer** is off. Try each address in the app's Addresses panel (or the Terminal window). If macOS asked about python3 and network connections, it must be **Allow**: change it under System Settings → Network → Firewall → Options. |
 | On a phone the **stars won't change** ("View only") | That's the default for other devices. In the app's **Ratings & Tags** panel (launcher: **☰ → Network access…** on the Mac), pick **PIN to rate** or **Anyone can rate**. |
@@ -545,7 +545,7 @@ again by itself.
   the "New capture" note meet the same standard even over a white photo (checked in that worst
   case). The two corner labels are deliberately faint so they don't compete with the photo, and
   they sit on top of it, so they aren't held to it; the **L** key hides them.
-- LfS Web Viewer is **not affiliated with or endorsed by Capture One**. Capture One and Live for
+- StudioViewer is **not affiliated with or endorsed by Capture One**. Capture One and Live for
   Studio are trademarks of their owner.
 
 ---
@@ -554,41 +554,41 @@ again by itself.
 
 ### Options
 
-You can also start the viewer from Terminal, in this folder, with `python3 lfs_viewer.py`, and
+You can also start the viewer from Terminal, in this folder, with `python3 studio_viewer.py`, and
 add any of these:
 
 | Option | What it does |
 |---|---|
 | `--local` | Only this Mac can open the viewer (default: your whole network). |
-| `--port 9000` | Use another port. If it's taken, the next free one is used (never the tunnel's), and the window says so. In the LfS Viewer app: **Settings › Network › Port**, then **Use Port**. |
+| `--port 9000` | Use another port. If it's taken, the next free one is used (never the tunnel's), and the window says so. In the StudioViewer app: **Settings › Network › Port**, then **Use Port**. |
 | `--no-open` | Don't open the browser automatically. |
 | `--session "/path/to/Session.cosessiondb"` | Where to read exposure info, if it isn't found automatically. |
 | `--c1 127.0.0.1:50163` | Connect to this Capture One address instead of finding it. |
 | `--debug` | Print each change message from Capture One. |
 | `--tunnel-port 8797` | Also listen on this port for a Cloudflare tunnel. See [How remote sharing works](#how-remote-sharing-works). |
 | `--settings "/path/settings.json"` | Keep the settings file somewhere else instead of in this folder. |
-| `--control` | Used by the LfS Viewer menu bar app (in the `App` folder; see its README) to run the viewer. See the top of `lfs_viewer.py`. |
+| `--control` | Used by the StudioViewer menu bar app (in the `App` folder; see its README) to run the viewer. See the top of `studio_viewer.py`. |
 
 The double-click launcher passes options through too. For example, run
-`"./Start LfS Viewer.command" --local` in Terminal.
+`"./Start StudioViewer.command" --local` in Terminal.
 
 ### Files in this folder
 
 | File | What it is |
 |---|---|
-| `Start LfS Viewer.command` | The double-click launcher. |
-| `lfs_viewer.py` | The viewer itself (Python 3, no extra packages). Its top section documents the protocol and endpoints. |
+| `Start StudioViewer.command` | The double-click launcher. |
+| `studio_viewer.py` | The viewer itself (Python 3, no extra packages). Its top section documents the protocol and endpoints. |
 | `viewer.html` | The web page. It's read fresh on each load, so changes need only a page reload. |
 | `gate.html` | The "enter the viewing code" page people see when they open the viewer through a tunnel. |
 | `remote-setup.html` | The step-by-step guide to sharing outside the studio through Cloudflare. |
-| `App/` | The LfS Viewer menu bar app (Xcode project; see `App/README.md`). It bundles `lfs_viewer.py`, `viewer.html`, `gate.html` and `remote-setup.html`. |
-| `settings.json` | For the launcher and Terminal: your **Network access** choice, PIN, wrong-PIN limits and remote viewing code. Created on first run; delete it to reset to "View only". The app keeps its own, in `~/Library/Application Support/LfS Viewer/`. |
+| `App/` | The StudioViewer menu bar app (Xcode project; see `App/README.md`). It bundles `studio_viewer.py`, `viewer.html`, `gate.html` and `remote-setup.html`. |
+| `settings.json` | For the launcher and Terminal: your **Network access** choice, PIN, wrong-PIN limits and remote viewing code. Created on first run; delete it to reset to "View only". The app keeps its own, in `~/Library/Application Support/StudioViewer/`. |
 | `README.md` | This guide. |
 
 ### How it works
 
 Capture One's Live for Studio runs a small web server on the Mac, on a port that changes each
-time it starts, and announces it on the network with Bonjour. `lfs_viewer.py` finds that port,
+time it starts, and announces it on the network with Bonjour. `studio_viewer.py` finds that port,
 opens its own session the same way the iPad app does, and relays folders, photos, changes and
 ratings between Capture One and your browser. To zoom to 100%, it asks Capture One for just the
 visible part of the photo at full resolution. Aperture, shutter speed and ISO aren't part of
@@ -611,7 +611,7 @@ session, since they don't listen for changes.
 ### How remote sharing works
 
 A Cloudflare tunnel can put the viewer on your own domain, so people outside the studio can watch.
-Start the viewer with `--tunnel-port 8797` (the LfS Viewer app does this for you) and point the
+Start the viewer with `--tunnel-port 8797` (the StudioViewer app does this for you) and point the
 tunnel at `http://localhost:8797`. The step-by-step setup is in [`remote-setup.html`](remote-setup.html).
 Don't use the main port (8787): there, requests from the tunnel would count as this Mac and could
 change everything. The main port refuses tunnel traffic, so a wrong setup shows an error instead
@@ -630,7 +630,7 @@ Through the tunnel:
 - **Signing everyone out** ends both PIN unlocks and viewing codes. An open page notices within
   about a minute and asks for the code again.
 
-The LfS Viewer menu bar app (in `App/`) does all of this from its window: it starts cloudflared,
+The StudioViewer menu bar app (in `App/`) does all of this from its window: it starts cloudflared,
 opens the tunnel port (8797 by default) and sets the viewing code. Run from Terminal, the viewing
 code is set in `settings.json` (`remote_code`; restart the viewer after editing it).
 
@@ -638,9 +638,9 @@ code is set in `settings.json` (`remote_code`; restart the viewer after editing 
 
 The viewer introduces itself to Capture One as the Live for Studio iPad app, version `1.4.2.3`.
 If a Capture One update rejects that ("refused the connection" in Terminal), set `APP_VERSION`
-near the top of `lfs_viewer.py` to the current version of the Live for Studio iPad app (shown
+near the top of `studio_viewer.py` to the current version of the Live for Studio iPad app (shown
 in the App Store), then start the viewer again.
 
 ---
 
-*LfS Web Viewer is made by [Faini Made](https://fainimade.com).*
+*StudioViewer is made by [Faini Made](https://fainimade.com).*

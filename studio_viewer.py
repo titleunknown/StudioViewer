@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""LfS Web Viewer: view a Capture One "Live for Studio" session in a web browser.
+"""StudioViewer: view a Capture One "Live for Studio" session in a web browser.
 
 Made by Faini Made (https://fainimade.com). Not affiliated with Capture One.
 Tested with Capture One 16.7.3 and the Live for Studio iPad app 1.4.2.3.
@@ -12,22 +12,22 @@ captures. The browser never talks to Capture One directly; this script
 relays every call (Capture One sends no CORS headers).
 
 Usage:
-    python3 lfs_viewer.py                 # this Mac and your network; prints the addresses
-    python3 lfs_viewer.py --local         # this Mac only (http://localhost:8787)
-    python3 lfs_viewer.py --port 9000     # another port (the next free one is used if taken)
-    python3 lfs_viewer.py --c1 127.0.0.1:49670   # skip auto-discovery
-    python3 lfs_viewer.py --session "/path/Session.cosessiondb"   # where to read exposure info
-    python3 lfs_viewer.py --no-open       # don't open the browser
-    python3 lfs_viewer.py --debug         # print each change message from Capture One
-    python3 lfs_viewer.py --tunnel-port 8797   # also listen for a Cloudflare tunnel (see Remote)
-    python3 lfs_viewer.py --control --settings PATH   # run by the LfS app (see Control)
+    python3 studio_viewer.py                 # this Mac and your network; prints the addresses
+    python3 studio_viewer.py --local         # this Mac only (http://localhost:8787)
+    python3 studio_viewer.py --port 9000     # another port (the next free one is used if taken)
+    python3 studio_viewer.py --c1 127.0.0.1:49670   # skip auto-discovery
+    python3 studio_viewer.py --session "/path/Session.cosessiondb"   # where to read exposure info
+    python3 studio_viewer.py --no-open       # don't open the browser
+    python3 studio_viewer.py --debug         # print each change message from Capture One
+    python3 studio_viewer.py --tunnel-port 8797   # also listen for a Cloudflare tunnel (see Remote)
+    python3 studio_viewer.py --control --settings PATH   # run by the StudioViewer app (see Control)
 
 Files next to this script:
     viewer.html               the web page (read from disk on each load, so edits need only a reload)
     gate.html                 the "enter the viewing code" page for remote visitors (see Remote)
     settings.json             network access mode, PINs and codes, created on first run (see Access);
                               --settings puts it elsewhere
-    Start LfS Viewer.command  double-click launcher for Finder
+    Start StudioViewer.command  double-click launcher for Finder
 
 The viewer's own endpoints (used by viewer.html):
     GET  /                    the page
@@ -37,7 +37,7 @@ The viewer's own endpoints (used by viewer.html):
     GET  /api/changes?c=C&feed=F   long-poll for the feed's changes (relays getServerChangesForLive;
                               204 when idle, 410 when the feed is gone: start a new one with /api/state)
     GET  /api/image?c=C&id=V&w=W&h=H&v=T[&l=&t=&r=&b=]   JPEG, optionally a crop (relays getImageForLive,
-                              cached; see Pictures). T is the photo's "lfsPicture" token from its record
+                              cached; see Pictures). T is the photo's "pictureToken" token from its record
                               (the viewer adds one to every record in /api/state and /api/changes),
                               optionally followed by "." and more: with the current token, the
                               picture may be kept for good
@@ -52,8 +52,8 @@ The viewer's own endpoints (used by viewer.html):
     POST /api/unlock {pin}    unlock rating on a network device (sets a cookie)
     POST /api/lock            give that back
     POST /api/view {code}     tunnel only: enter the remote viewing code (sets a cookie)
-    POST /api/looking {photo} the photo this page shows now, for the LfS app's Viewers panel
-    Every POST must carry the header "X-LfS: 1", which blocks cross-site requests.
+    POST /api/looking {photo} the photo this page shows now, for the StudioViewer app's Viewers panel
+    Every POST must carry the header "X-StudioViewer: 1", which blocks cross-site requests.
 
 Remote (--tunnel-port N): a second listener on 127.0.0.1:N for cloudflared, so people outside the
 studio can watch through the photographer's own domain. Point the tunnel at http://localhost:N,
@@ -67,9 +67,9 @@ the owner (so it refuses anything carrying Cloudflare's headers). On the tunnel 
     - besides the per-device limit, wrong codes and PINs from all remote visitors together are
       capped (REMOTE_MAX in REMOTE_WINDOW seconds), since the internet has plenty of addresses
 
-Control (--control): how the LfS menu bar app runs this script. Settings move out of the web page
+Control (--control): how the StudioViewer menu bar app runs this script. Settings move out of the web page
 (POST /api/access is refused, and /api/access no longer shows the PIN or addresses), and:
-    stdout  besides the usual messages, events as lines of "@lfs " + one JSON object:
+    stdout  besides the usual messages, events as lines of "@sv " + one JSON object:
               {"event": "c1", "state": "waiting|connected|lost", "url": ..., "session": name}
               {"event": "listening", "port": P, "requestedPort": R, "local": bool, "urls": {...}, "tunnelPort": T}
                                    (P differs from R when R was in use: the next free one is taken, never T)
@@ -148,14 +148,14 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 APP_VERSION = "1.4.2.3"
 PROTOCOL_VERSION = "1.1"
-USER_AGENT = f"Live/{APP_VERSION} LfSWebViewer"
+USER_AGENT = f"Live/{APP_VERSION} StudioViewer"
 LONG_POLL_TIMEOUT = 75  # Capture One answers an idle long-poll after ~60 s
 DEBUG = False  # --debug prints each change message from Capture One
 HERE = os.path.dirname(os.path.abspath(__file__))
 PAGE = os.path.join(HERE, "viewer.html")
 GATE = os.path.join(HERE, "gate.html")  # remote visitors see this until they enter the viewing code
 SETTINGS = os.path.join(HERE, "settings.json")  # network access mode and PIN (see Access); --settings changes it
-CONTROL = False  # --control: run by the LfS app (see Control)
+CONTROL = False  # --control: run by the StudioViewer app (see Control)
 # Set by the app's "stop" or by stdin closing (from the command thread). Not a simulated Ctrl-C: a
 # process started in the background ignores SIGINT, and then _thread.interrupt_main() silently does
 # nothing. The main thread polls it with is_set() and short sleeps rather than waiting on it: see
@@ -192,7 +192,7 @@ SETTABLE = {
 }
 # Everything printed goes through one writer thread, a line at a time, so lines from different
 # threads never mix, and no thread ever waits on the output: if whoever reads it (the Terminal, or
-# the LfS app) stops reading, a full pipe would otherwise freeze any request that logs a line.
+# the StudioViewer app) stops reading, a full pipe would otherwise freeze any request that logs a line.
 # Past OUT_MAX waiting lines, new ones are dropped instead.
 OUT_MAX = 2000
 OUT = queue.Queue(maxsize=OUT_MAX)
@@ -233,9 +233,9 @@ def say(text=""):
 
 
 def emit(event, **data):
-    """Tell the LfS app something (with --control only). See Control."""
+    """Tell the StudioViewer app something (with --control only). See Control."""
     if CONTROL:
-        _out("@lfs " + json.dumps({"event": event, **data}) + "\n")
+        _out("@sv " + json.dumps({"event": event, **data}) + "\n")
 
 
 class CaptureOne:
@@ -444,10 +444,10 @@ class Feeds:
             f.co.disconnect()
 
 
-DEVICE_COOKIE = "lfs_device"
+DEVICE_COOKIE = "lfs_device"  # cookie names keep the app's old name (LfS): renaming them would sign every device out
 DEVICE_FORMAT = re.compile(r"[0-9a-f]{32}")
 REMOVED_PAGE = b"""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>LfS Web Viewer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>StudioViewer</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#111214;color:#e8e8ea;
 font:16px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;padding:16px;text-align:center}
 p{color:#8b8d94}</style></head><body><div><h1 style="font-size:20px">This device was removed</h1>
@@ -475,7 +475,7 @@ def describe_agent(ua):
 
 
 class Devices:
-    """Who's watching, for the LfS app's Viewers panel: one entry per browser, identified by a
+    """Who's watching, for the StudioViewer app's Viewers panel: one entry per browser, identified by a
     device cookie (random, kept for a year) that the viewer gives every browser it serves. Unlike
     a page's client id, it survives reloads, so a removed device stays removed.
 
@@ -563,7 +563,7 @@ class Devices:
 
     def snapshot(self, folders):
         """The devices connected now, those that left in the last hour ("left": true, newest
-        first), then the removed ones, as the LfS app shows them."""
+        first), then the removed ones, as the StudioViewer app shows them."""
         now = time.time()
         a = self.access
         with a.lock:
@@ -723,7 +723,7 @@ class Pictures:
 
     Version: nothing in Live for Studio's records changes when a photo is edited (it sends a
     "modified" change, and only to pages watching that folder). So every record the viewer passes
-    on gets an "lfsPicture" token, which the page puts in the picture's address. The token changes
+    on gets an "pictureToken" token, which the page puts in the picture's address. The token changes
     when
       - Capture One re-processes the photo: the session database's process counters rise (see
         Exposure.process_counters), whichever folder anyone is watching, and also for edits made
@@ -832,7 +832,7 @@ class Pictures:
                     self._changed(n, now)
         for v in variants:
             if isinstance(v, dict) and v.get("kVariantKey_VariantID"):
-                v["lfsPicture"] = self.token(v["kVariantKey_VariantID"], counters)
+                v["pictureToken"] = self.token(v["kVariantKey_VariantID"], counters)
         return json.dumps(data).encode()
 
     def lookup(self, key):
@@ -1092,7 +1092,7 @@ class Access:
 
     MODES = ("view", "pin", "open")
     REMOTE_VIEWS = ("code", "open")
-    COOKIE, VIEW_COOKIE = "lfs_auth", "lfs_view"
+    COOKIE, VIEW_COOKIE = "lfs_auth", "lfs_view"  # the old name, kept: see DEVICE_COOKIE
     REMOTE_MAX, REMOTE_WINDOW = 20, 600  # wrong remote guesses from everyone together, per 10 minutes
     DEFAULTS = {"mode": "view", "pin": "", "max_fails": 5, "lockout": 60, "remote_view": "code", "remote_code": "",
                 "operator": "the photographer"}  # how visitors' pages name whoever runs the viewer
@@ -1127,14 +1127,14 @@ class Access:
         return None
 
     def settings(self):
-        """Everything the LfS app shows and changes (PIN and code included)."""
+        """Everything the StudioViewer app shows and changes (PIN and code included)."""
         d = self.data
         return {"mode": d["mode"], "pin": d["pin"], "maxFails": d["max_fails"], "lockout": d["lockout"],
                 "remoteView": d["remote_view"], "remoteCode": d["remote_code"], "operator": d["operator"]}
 
     def operator(self, capital=False, page=False):
         """Who runs the viewer, as visitors' pages say it: "the photographer" by default, or what's
-        set in the LfS app ("the digi-tech", "Studio 4"...). capital: to start a sentence.
+        set in the StudioViewer app ("the digi-tech", "Studio 4"...). capital: to start a sentence.
         page: made safe to put in a web page."""
         who = self.data["operator"]
         if capital:
@@ -1512,7 +1512,7 @@ class Handler(BaseHTTPRequestHandler):
             "isOwner": owner,
             "canRate": a.can_rate(owner, self.cookie(), self.device()),
             "unlocked": a.unlocked(self.cookie()),
-            "managed": CONTROL,  # settings are in the LfS app, not in the page
+            "managed": CONTROL,  # settings are in the StudioViewer app, not in the page
             "remote": self.remote,
         }
         if owner and not CONTROL:  # only this Mac sees the PIN and the addresses to share
@@ -1560,15 +1560,15 @@ class Handler(BaseHTTPRequestHandler):
         try:
             # The page sends this header with every change. A form or script on another website
             # can't add it without permission the viewer never grants, so such requests are refused.
-            if self.headers.get("X-LfS") != "1":
-                self.send(403, b"missing X-LfS header", "text/plain")
+            if self.headers.get("X-StudioViewer") != "1":
+                self.send(403, b"missing X-StudioViewer header", "text/plain")
                 return
             if self.screen(url.path, post=True) or self.admit(url.path):
                 return
             if url.path == "/api/access":
-                # Change the network mode. Only from this Mac, and only when the LfS app isn't in charge.
+                # Change the network mode. Only from this Mac, and only when the StudioViewer app isn't in charge.
                 if CONTROL:
-                    self.send_json(403, {"error": "Change this in the LfS app."})
+                    self.send_json(403, {"error": "Change this in the StudioViewer app."})
                     return
                 if not self.is_owner():
                     self.send_json(403, {"error": "Only the Mac running the viewer can change this."})
@@ -1664,7 +1664,7 @@ class RemoteHandler(Handler):
 
 class TunnelListener:
     """The tunnel port (see Remote): opened at start with --tunnel-port, or while running by the
-    LfS app's "tunnel" command when remote sharing is turned on, and closed again when it's
+    StudioViewer app's "tunnel" command when remote sharing is turned on, and closed again when it's
     turned off. Changing it never disturbs the main port, so viewers in the studio stay connected."""
     server = None
 
@@ -1687,7 +1687,7 @@ class TunnelListener:
         STATUS["tunnelPort"] = None
 
 
-# What the LfS app is told about (see Control); kept up to date by main() and Monitor.
+# What the StudioViewer app is told about (see Control); kept up to date by main() and Monitor.
 STATUS = {
     "c1": {"state": "waiting", "url": None, "session": ""},
     "port": None, "local": False, "urls": {}, "tunnelPort": None,
@@ -1697,7 +1697,7 @@ STATUS = {
 
 
 def url_info(port, local):
-    """The viewer's addresses, as the LfS app shows them."""
+    """The viewer's addresses, as the StudioViewer app shows them."""
     info = {"local": f"http://localhost:{port}", "network": [], "bonjour": None}
     if not local:
         for name, url in network_urls(port):
@@ -1737,7 +1737,7 @@ def session_name(c1, timeout=10):
 class Monitor:
     """Every few seconds: is Capture One still there, how many pages are open (and which devices,
     with the data sent to each), and have the network addresses changed? Changes are printed and
-    sent to the LfS app as events."""
+    sent to the StudioViewer app as events."""
 
     EVERY = 5  # seconds
 
@@ -1785,7 +1785,7 @@ class Monitor:
 
 
 def report_devices(force=False):
-    """Send the LfS app the device list (see Devices) when it has changed."""
+    """Send the StudioViewer app the device list (see Devices) when it has changed."""
     devices = Handler.devices.snapshot(FOLDERS)
     if force or devices != STATUS["devices"]:
         STATUS["devices"] = devices
@@ -1821,7 +1821,7 @@ def device_command(cmd, msg):
 
 
 def command(msg):
-    """Carry out one command from the LfS app (see Control). Returns the reply's extra fields;
+    """Carry out one command from the StudioViewer app (see Control). Returns the reply's extra fields;
     raises ValueError with a message the app can show."""
     a, cmd = Handler.access, msg.get("cmd")
     if cmd in ("block", "unblock", "rating"):
@@ -1880,7 +1880,7 @@ def command(msg):
 
 
 def listen_for_commands():
-    """Read the LfS app's commands from stdin until it closes (see Control)."""
+    """Read the StudioViewer app's commands from stdin until it closes (see Control)."""
     for line in sys.stdin:
         if not line.strip():
             continue
@@ -1917,7 +1917,7 @@ def main():
     ap.add_argument("--no-open", action="store_true", help="don't open the browser automatically")
     ap.add_argument("--session", help="path to the .cosessiondb file for exposure info (default: find it)")
     ap.add_argument("--tunnel-port", type=int, help="also listen on 127.0.0.1:PORT for a Cloudflare tunnel (see Remote)")
-    ap.add_argument("--control", action="store_true", help="run by the LfS app: events on stdout, commands on stdin")
+    ap.add_argument("--control", action="store_true", help="run by the StudioViewer app: events on stdout, commands on stdin")
     ap.add_argument("--settings", help="where to keep settings.json (default: next to this script)")
     args = ap.parse_args()
     global DEBUG, CONTROL, SETTINGS
@@ -2009,7 +2009,7 @@ def main():
             say(f"  Tunnel:           http://localhost:{args.tunnel_port}   (point cloudflared here)")
         if not args.local or tunnel:
             say(f"\nRating and tagging: this Mac always can; {ACCESS_LABELS[Handler.access.mode]}.")
-            say("  Change it in the LfS app." if CONTROL else "  Change it in the viewer on this Mac: ☰ menu > Network access.")
+            say("  Change it in the StudioViewer app." if CONTROL else "  Change it in the viewer on this Mac: ☰ menu > Network access.")
         say("\nLeave this window open while you use the viewer. Ctrl-C to stop.")
         if not args.no_open:
             webbrowser.open(url)

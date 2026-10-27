@@ -133,7 +133,7 @@ final class CloudflaredUpdate {
 
     // MARK: Finding, checking and installing
 
-    /// ~/Library/Application Support/LfS Viewer/cloudflared/bin/cloudflared
+    /// ~/Library/Application Support/StudioViewer/cloudflared/bin/cloudflared
     nonisolated static var downloaded: URL {
         Paths.cloudflaredHome.appending(path: "bin/cloudflared")
     }

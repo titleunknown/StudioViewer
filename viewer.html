@@ -1,11 +1,12 @@
 <!doctype html>
 <!--
-  LfS Web Viewer: the page served by lfs_viewer.py. Made by Faini Made (https://fainimade.com).
+  StudioViewer: the page served by studio_viewer.py. Made by Faini Made (https://fainimade.com).
   One self-contained file: styles, markup, then the script. The script is grouped into sections
   (folder panel, filmstrip, sorting and filtering, selected image, exposure, rating and tags,
-  access, actual-size zoom, gestures, data flow, controls, fullscreen mode). It talks only to lfs_viewer.py's
+  access, actual-size zoom, gestures, data flow, controls, fullscreen mode). It talks only to studio_viewer.py's
   /api/* endpoints, documented at the top of that file. Settings (panel width, filmstrip side,
-  filters, last folder) are remembered per browser in localStorage under "lfs.*".
+  filters, last folder) are remembered per browser in localStorage under "lfs.*", and the overlay
+  image in IndexedDB "lfs": the app's old name (LfS), kept so browsers don't lose what they saved.
 -->
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#18191c">
-<title>LfS Web Viewer</title>
+<title>StudioViewer</title>
 <style>
   :root {
     --bg: #111214;
@@ -731,7 +732,7 @@
       <rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><line x1="6" y1="2.5" x2="6" y2="13.5"/>
     </svg>
   </button>
-  <h1 id="title">LfS Web Viewer</h1>
+  <h1 id="title">StudioViewer</h1>
   <div id="status"><button id="statusBtn" class="status-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="conn"><span id="dot" role="img" aria-label="Connecting"></span><span id="statusText" role="status">Connecting…</span></button></div>
   <button id="followBtn" class="follow-btn" title="Jump to each new capture (F)" aria-pressed="false"><span class="follow-dot" aria-hidden="true"></span>Follow</button>
   <div class="spacer"></div>
@@ -812,7 +813,7 @@
   </div>
   <div class="menu-label">Rating &amp; tags · <span id="accessNote"></span></div>
   <button role="menuitem" id="accessItem" class="menu-item" hidden><span class="check"></span>Network access…</button>
-  <div id="accessManaged" class="menu-foot" hidden>Who else can rate is set in the LfS app.</div>
+  <div id="accessManaged" class="menu-foot" hidden>Who else can rate is set in the StudioViewer app.</div>
   <button role="menuitem" id="unlockItem" class="menu-item" hidden><span class="check"></span>Enter PIN to rate…</button>
   <button role="menuitem" id="lockItem" class="menu-item" hidden><span class="check"></span>Lock rating on this device</button>
   <div class="menu-sep"></div>
@@ -820,7 +821,7 @@
   <button role="menuitem" id="connItem" class="menu-item"><span class="check"></span>Connection details…</button>
   <button role="menuitem" id="tourItem" class="menu-item"><span class="check"></span>Take the tour…</button>
   <button role="menuitem" id="shortcutsItem" class="menu-item"><span class="check"></span>Keyboard shortcuts<kbd>?</kbd></button>
-  <button role="menuitem" id="aboutItem" class="menu-item"><span class="check"></span>About LfS Web Viewer</button>
+  <button role="menuitem" id="aboutItem" class="menu-item"><span class="check"></span>About StudioViewer</button>
   <div class="menu-sep"></div>
   <div id="menuFoot" class="menu-foot"></div>
 </div>
@@ -934,7 +935,7 @@
   </div>
 
   <section data-panel="about" class="dlg-body">
-    <h2>LfS Web Viewer</h2>
+    <h2>StudioViewer</h2>
     <p>A web viewer for Capture One's <strong>Live for Studio</strong>. It connects to the Live for Studio
       server that Capture One runs on this Mac and shows the shared session in any web browser: on this Mac,
       a client monitor, a laptop, or a phone or tablet on the same network. No iPad app needed.</p>
@@ -1232,13 +1233,13 @@ function setStatus(ok, text) {
   if (state.present) renderPresentLive();  // a client monitor must show it if the connection drops
 }
 
-// `v=` names the picture's version: the viewer's token for the photo (lfsPicture, which changes
-// whenever Capture One re-processes it; see Pictures in lfs_viewer.py), then this page's own count of
+// `v=` names the picture's version: the viewer's token for the photo (pictureToken, which changes
+// whenever Capture One re-processes it; see Pictures in studio_viewer.py), then this page's own count of
 // edits it has seen to that photo (see bumpPicture). With a current token the browser may keep the
 // picture for good, so edits show up because the address changes, never from a stale copy.
 // `crop` is an optional {l, t, r, b} rectangle in full-image pixels.
 function imgUrl(v, w, h, crop) {
-  const id = v.kVariantKey_VariantID, ver = `${v.lfsPicture || 0}.${state.versions[id] || 0}`;
+  const id = v.kVariantKey_VariantID, ver = `${v.pictureToken || 0}.${state.versions[id] || 0}`;
   let url = `/api/image?c=${encodeURIComponent(state.collection)}&id=${encodeURIComponent(id)}&w=${w}&h=${h}&v=${ver}&k=2`;  // k: bump to discard every browser's old cached pictures
   if (crop) url += `&l=${crop.l}&t=${crop.t}&r=${crop.r}&b=${crop.b}`;
   return url;
@@ -1257,7 +1258,7 @@ const thumbUrl = (v) => imgUrl(v, bucket(170 * dpr()), bucket(170 * dpr()));
 
 // Random ids that tell the viewer script which page, and which folder visit, a request belongs to.
 // Capture One delivers each change to only one listener of a session, so every page and folder
-// visit listens on a session of its own (see Feeds in lfs_viewer.py). Passing a `feed` to
+// visit listens on a session of its own (see Feeds in studio_viewer.py). Passing a `feed` to
 // fetchState starts that feed; /api/changes then needs the same feed.
 const randomId = () => Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, "0")).join("");
 const CLIENT_ID = randomId();
@@ -1814,7 +1815,7 @@ function renderSelection() {
   reportLooking(v.kVariantKey_VariantName);
 }
 
-// Tell the viewer which photo this page shows, for the LfS app's Viewers panel ("on NEO_0398.jpg").
+// Tell the viewer which photo this page shows, for the StudioViewer app's Viewers panel ("on NEO_0398.jpg").
 // Once the selection has settled, and only when it changed.
 let lookingTimer, lookingSent = null;
 function reportLooking(name) {
@@ -2015,7 +2016,7 @@ async function setProp(v, prop, value) {
 function post(url, data) {
   return fetch(url, {
     method: "POST",
-    headers: { "X-LfS": "1", ...(data ? { "Content-Type": "application/json" } : {}) },
+    headers: { "X-StudioViewer": "1", ...(data ? { "Content-Type": "application/json" } : {}) },
     body: data ? JSON.stringify(data) : undefined,
   });
 }
@@ -2032,7 +2033,7 @@ async function loadAccess() {
 function renderAccess() {
   const a = state.access;
   renderMenu();
-  // When the LfS app runs the viewer, its window holds these settings instead of this page.
+  // When the StudioViewer app runs the viewer, its window holds these settings instead of this page.
   $("accessItem").hidden = !a.isOwner || a.managed;
   $("accessManaged").hidden = !a.isOwner || !a.managed;
   $("unlockItem").hidden = a.isOwner || a.mode !== "pin" || a.unlocked;
@@ -2419,10 +2420,10 @@ function update(data, { jumpToNewest = false } = {}) {
   state.updatedAt = Date.now();
   const obj = data.objects?.[0];
   if (obj) {
-    $("title").textContent = obj.kObjectKey_ObjectName || "LfS Web Viewer";
+    $("title").textContent = obj.kObjectKey_ObjectName || "StudioViewer";
     state.sessionName = obj.kObjectKey_ObjectName || "";
     renderMenu();
-    document.title = `${obj.kObjectKey_ObjectName || "LfS"} · Web Viewer`;
+    document.title = obj.kObjectKey_ObjectName ? `${obj.kObjectKey_ObjectName} · StudioViewer` : "StudioViewer";
     renderFolders(obj.kObjectKey_Collections || [], obj.kObjectKey_CollectionIDWithNewContent);
     // Capture One's hint about which folder just got new photos: check it straight away.
     const hint = obj.kObjectKey_CollectionIDWithNewContent || "";
@@ -2521,7 +2522,7 @@ async function poll(token, signal, feed) {
       }
     } catch (e) {
       if (signal?.aborted || token !== state.pollToken) return;  // this folder was closed: stop quietly
-      // A TypeError from fetch means this page can't reach lfs_viewer.py at all.
+      // A TypeError from fetch means this page can't reach studio_viewer.py at all.
       setStatus(false, e instanceof TypeError ? "Viewer script isn't running" : "Bad message from Capture One; retrying");
       await new Promise((res) => setTimeout(res, 3000));
     }
@@ -4220,7 +4221,7 @@ function maybeStartTour() {
     const obj = data.objects?.[0] || {};
     const collections = obj.kObjectKey_Collections || [];
     renderFolders(collections, obj.kObjectKey_CollectionIDWithNewContent);
-    $("title").textContent = obj.kObjectKey_ObjectName || "LfS Web Viewer";
+    $("title").textContent = obj.kObjectKey_ObjectName || "StudioViewer";
     state.sessionName = obj.kObjectKey_ObjectName || "";
     renderMenu();
     setStatus(true, "Live");
@@ -4242,7 +4243,7 @@ function maybeStartTour() {
     else maybeStartTour();
   } catch (e) {
     console.error(e);
-    // A TypeError from fetch means this page can't reach lfs_viewer.py at all.
+    // A TypeError from fetch means this page can't reach studio_viewer.py at all.
     setStatus(false, e instanceof TypeError && /fetch/i.test(e.message)
       ? "Viewer script isn't running. Start it, then reload this page."
       : `Couldn't load folders: ${e.message}`);

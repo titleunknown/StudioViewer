@@ -1,6 +1,6 @@
-// LfS Viewer app icon: an eye whose iris is a camera aperture, on the viewer's dark charcoal,
+// StudioViewer app icon: an eye whose iris is a camera aperture, on the viewer's dark charcoal,
 // with a green "live" dot. Drawn in code so it can be tweaked and re-rendered:
-//     swift App/Icon/LfSIcon.swift      # writes App/Icon/icon-1024.png
+//     swift App/Icon/StudioViewerIcon.swift      # writes App/Icon/icon-1024.png
 // then App/Icon/make-iconset.sh fills the Xcode asset catalog.
 // Layout follows Apple's macOS icon grid: an 824 pt rounded square centred on a 1024 canvas.
 import AppKit

@@ -28,7 +28,7 @@ enum AppInfo {
     }
 }
 
-/// About LfS Viewer: icon, version, Faini Made, the software and privacy policies and the licences of what's bundled.
+/// About StudioViewer: icon, version, Faini Made, the software and privacy policies and the licences of what's bundled.
 /// Laid out like PortScope's About tab.
 struct AboutView: View {
     @State private var updateChecker = UpdateChecker.shared
@@ -41,7 +41,7 @@ struct AboutView: View {
                 .frame(width: 96, height: 96)
                 .accessibilityHidden(true)
 
-            Text("LfS Viewer").font(.title2.bold())
+            Text("StudioViewer").font(.title2.bold())
             Text(AppInfo.versionLine)
                 .font(.body.monospacedDigit())
                 .foregroundStyle(.secondary)
@@ -86,8 +86,8 @@ struct AboutView: View {
                         if on { updateChecker.check(automatic: true) }
                     }
                 Text(autoCheckUpdates
-                     ? "Asks GitHub once a day while LfS Viewer is running. Nothing about your Mac is sent."
-                     : "Off: LfS Viewer only looks when you press the button.")
+                     ? "Asks GitHub once a day while StudioViewer is running. Nothing about your Mac is sent."
+                     : "Off: StudioViewer only looks when you press the button.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -104,7 +104,7 @@ struct AboutView: View {
             Button("Acknowledgments\u{2026}") { Windows.shared.showAcknowledgments() }
                 .buttonStyle(.link)
                 .font(.subheadline)
-            Text("Not endorsed or affiliated with Capture One A/S.")
+            Text("Not endorsed by or affiliated with Capture One A/S.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             Text("© 2026 Faini Made Inc. All Rights Reserved")
@@ -139,7 +139,7 @@ struct AcknowledgmentsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Acknowledgments").font(.title2.bold())
-            Text("LfS Viewer includes the following open-source software. Their licences are reproduced here, as they require.")
+            Text("StudioViewer includes the following open-source software. Their licences are reproduced here, as they require.")
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             ScrollView {
@@ -182,12 +182,12 @@ struct AcknowledgmentsView: View {
     }
 }
 
-/// The app menu's "About LfS Viewer" and "Settings…": both open the main window on their panel,
+/// The app menu's "About StudioViewer" and "Settings…": both open the main window on their panel,
 /// in place of the standard About panel and a separate Settings window.
 struct AppMenuCommands: Commands {
     var body: some Commands {
         CommandGroup(replacing: .appInfo) {
-            Button("About LfS Viewer") { Windows.shared.showMain(panel: .about) }
+            Button("About StudioViewer") { Windows.shared.showMain(panel: .about) }
         }
         CommandGroup(replacing: .appSettings) {
             Button("Settings…") { Windows.shared.showMain(panel: .settings) }

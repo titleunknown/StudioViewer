@@ -2,7 +2,7 @@ import Foundation
 import Observation
 import UserNotifications
 
-/// "Check for Updates…": asks GitHub for the latest LfS Viewer release and, if it's newer, offers the
+/// "Check for Updates…": asks GitHub for the latest StudioViewer release and, if it's newer, offers the
 /// download. Copied from PortScope's UpdateChecker. Updates replace the whole app, never its bundled
 /// Python or cloudflared alone: those are signed and notarized as part of it. (A newer cloudflared
 /// can be downloaded outside the app instead; see CloudflaredUpdate.)
@@ -13,14 +13,14 @@ final class UpdateChecker {
     /// in the same "couldn't check right now" branch as being offline, so this is safe to ship before
     /// the repo goes public, and starts working the moment it does, with no code change.
     /// Releases are tagged with the version ("v0.2" or "0.2") and carry the notarized zip.
-    static let repo = "titleunknown/LfS-Viewer"
+    static let repo = "titleunknown/StudioViewer"
 
     /// Where "Download…" sends the user to get the new version.
     static var releasesURL: URL { URL(string: "https://github.com/\(repo)/releases")! }
 
     static let shared = UpdateChecker()
 
-    /// Off by default: LfS Viewer makes no network request of its own accord for this unless asked to.
+    /// Off by default: StudioViewer makes no network request of its own accord for this unless asked to.
     static let autoCheckKey = "autoCheckUpdates"
     private static let lastCheckKey = "lastUpdateCheck"
     private static let lastAnnouncedKey = "lastAnnouncedUpdate"
@@ -90,8 +90,8 @@ final class UpdateChecker {
 
     private func announce(_ latest: String) {
         let content = UNMutableNotificationContent()
-        content.title = "LfS Viewer \(latest) is available"
-        content.body = "You have \(AppInfo.shortVersion). Open About LfS Viewer to download it."
+        content.title = "StudioViewer \(latest) is available"
+        content.body = "You have \(AppInfo.shortVersion). Open About StudioViewer to download it."
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "update-\(latest)", content: content, trigger: nil))
     }
 

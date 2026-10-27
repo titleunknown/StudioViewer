@@ -21,10 +21,10 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("When LfS Viewer opens") {
+            Section("When StudioViewer opens") {
                 Toggle("Start the viewer", isOn: $startOnLaunch)
                 Toggle("Show the window", isOn: $showWindowAtLaunch)
-                Toggle("Open LfS Viewer at login", isOn: loginBinding)
+                Toggle("Open StudioViewer at login", isOn: loginBinding)
                 if loginItem == .requiresApproval {
                     HStack {
                         Text("Allow it in System Settings › General › Login Items.")

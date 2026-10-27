@@ -44,14 +44,14 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         case .crashed(let reason):
             lostTimer?.cancel()
             toldLost = false
-            post("LfS Viewer stopped", reason, category: Self.crashCategory)
+            post("StudioViewer stopped", reason, category: Self.crashCategory)
         case .error(let message):
-            post("LfS Viewer", message)
+            post("StudioViewer", message)
         case .guessing:
             post("Someone is guessing the viewing code",
                  "Remote unlocking is paused for a few minutes. Consider changing the code.")
         case .tunnelDropped:
-            post("Remote sharing dropped", "People outside the studio can't see the shoot. LfS Viewer keeps trying to reconnect.")
+            post("Remote sharing dropped", "People outside the studio can't see the shoot. StudioViewer keeps trying to reconnect.")
         case .tunnelBack:
             post("Remote sharing is back", "People outside the studio can watch again.")
         case .tunnelFailed(let reason):
@@ -69,7 +69,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil))
     }
 
-    // Show notifications even while LfS Viewer is the active app.
+    // Show notifications even while StudioViewer is the active app.
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification)
         async -> UNNotificationPresentationOptions {
         [.banner, .sound]

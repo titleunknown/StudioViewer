@@ -1,5 +1,5 @@
 #!/bin/bash
-# Double-click this file in Finder to start the LfS Web Viewer.
+# Double-click this file in Finder to start the StudioViewer.
 # It opens a Terminal window (leave it open while you use the viewer) and your browser.
 # To stop the viewer, close that Terminal window or press Ctrl-C in it.
 
@@ -11,6 +11,6 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 1
 fi
 
-python3 lfs_viewer.py "$@"
+python3 studio_viewer.py "$@"
 echo
 read -r -p "The viewer has stopped. Press Return to close this window."

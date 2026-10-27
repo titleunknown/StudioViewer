@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
-  LfS Viewer: the guide to sharing outside the studio through Cloudflare. Made by Faini Made.
-  Bundled in the LfS Viewer app (Remote sharing › Setup Guide), which opens it as
+  StudioViewer: the guide to sharing outside the studio through Cloudflare. Made by Faini Made.
+  Bundled in the StudioViewer app (Remote sharing › Setup Guide), which opens it as
   remote-setup.html?port=N so the tunnel port matches the app's Settings. Self-contained: it must
   work offline, from a file. Checked against Cloudflare's dashboard and docs on 2026-10-20.
 -->
@@ -88,7 +88,7 @@ your viewing code to get in.</p>
     <li><a href="#quick">Quick option: a temporary link</a></li>
     <li><a href="#account">Your own address, step 1: a Cloudflare account</a></li>
     <li><a href="#domain">Step 2: your domain on Cloudflare</a></li>
-    <li><a href="#tunnel">Step 3: create the tunnel and connect LfS Viewer</a></li>
+    <li><a href="#tunnel">Step 3: create the tunnel and connect StudioViewer</a></li>
     <li><a href="#route">Step 4: publish your address</a></li>
     <li><a href="#test">Step 5: test it and share it</a></li>
     <li><a href="#running">Keeping it running</a></li>
@@ -117,7 +117,7 @@ your viewing code to get in.</p>
 
 <h2 id="quick">Quick option: a temporary link</h2>
 <ol class="steps">
-  <li>In the LfS Viewer window, open <strong class="ui">Remote Sharing</strong> in the sidebar and choose <strong class="ui">Temporary link</strong>.</li>
+  <li>In the StudioViewer window, open <strong class="ui">Remote Sharing</strong> in the sidebar and choose <strong class="ui">Temporary link</strong>.</li>
   <li>Check there's a <strong class="ui">Viewing code</strong> and click <strong class="ui">Save</strong>
     (or <strong class="ui">New Code</strong>, then <strong class="ui">Save</strong>).</li>
   <li>Switch on <strong class="ui">Share outside the studio</strong> (in the window, or from the menu bar icon).
@@ -178,21 +178,21 @@ your viewing code to get in.</p>
 </ol>
 <p class="muted">Prefer a temporary link instead? See the <a href="#quick">quick option</a>.</p>
 
-<h2 id="tunnel">Step 3: create the tunnel and connect LfS Viewer</h2>
-<p>A tunnel is a private line from your Mac out to Cloudflare. LfS Viewer runs it for you; you only create it once.</p>
+<h2 id="tunnel">Step 3: create the tunnel and connect StudioViewer</h2>
+<p>A tunnel is a private line from your Mac out to Cloudflare. StudioViewer runs it for you; you only create it once.</p>
 <ol class="steps">
   <li>In the <a href="https://dash.cloudflare.com/">Cloudflare dashboard</a>, open
     <strong class="ui">Networking › Tunnels</strong> and select <strong class="ui">Create a tunnel</strong>.
     <span class="muted">(In older dashboards it's under Zero Trust › Networks › Tunnels; if you're asked for a
     connector type, choose Cloudflared.)</span></li>
-  <li>Name it, for example <code>LfS Viewer</code>, and select <strong class="ui">Create Tunnel</strong>.</li>
+  <li>Name it, for example <code>StudioViewer</code>, and select <strong class="ui">Create Tunnel</strong>.</li>
   <li>Choose <strong>macOS</strong> as the operating system. Cloudflare shows an install command containing a long
     code that starts with <code>eyJ</code>: that's the tunnel's <strong>token</strong>. Copy the whole command.
-    <div class="note"><strong>Don't run the command.</strong> LfS Viewer has its own copy of cloudflared and
+    <div class="note"><strong>Don't run the command.</strong> StudioViewer has its own copy of cloudflared and
     runs it for you. Treat the token like a password: anyone with it could stand in for your tunnel.</div></li>
-  <li>In the LfS Viewer window, open <strong class="ui">Remote Sharing</strong> in the sidebar, choose <strong class="ui">Your domain</strong>,
+  <li>In the StudioViewer window, open <strong class="ui">Remote Sharing</strong> in the sidebar, choose <strong class="ui">Your domain</strong>,
     paste the command into <strong class="ui">Tunnel token</strong> and click <strong class="ui">Save</strong>.
-    It keeps only the token, in your Mac's Keychain. If macOS asks whether LfS Viewer may use it, choose
+    It keeps only the token, in your Mac's Keychain. If macOS asks whether StudioViewer may use it, choose
     <strong>Always Allow</strong>.</li>
   <li>Check there's a saved <strong class="ui">Viewing code</strong>, then switch on
     <strong class="ui">Share outside the studio</strong>.</li>
@@ -214,11 +214,11 @@ your viewing code to get in.</p>
   <li><strong class="ui">Service URL</strong>: copy this exactly, including <code>http://</code>:
     <div class="copy"><span id="serviceURL">http://localhost:8797</span><button type="button" data-copy="serviceURL">Copy</button></div>
     <p class="muted">Plain <code>http</code>, not <code>https</code>: the line between Cloudflare and your Mac is
-    already encrypted by the tunnel, and visitors get <code>https</code> from Cloudflare. The number is LfS
-    Viewer's tunnel port (<strong class="ui">Settings</strong> › Remote sharing); it isn't your viewer's usual 8787.</p></li>
+    already encrypted by the tunnel, and visitors get <code>https</code> from Cloudflare. The number is
+    StudioViewer's tunnel port (<strong class="ui">Settings</strong> › Remote sharing); it isn't your viewer's usual 8787.</p></li>
   <li>Leave <strong class="ui">Additional application settings</strong> as they are, and select
     <strong class="ui">Add route</strong>. Cloudflare creates the DNS record for you.</li>
-  <li>In LfS Viewer, type the full address into <strong class="ui">Public address</strong>, for example
+  <li>In StudioViewer, type the full address into <strong class="ui">Public address</strong>, for example
     <code>view.yourstudio.com</code>. The address then appears under the sharing switch, with Copy and QR code.</li>
 </ol>
 
@@ -227,10 +227,10 @@ your viewing code to get in.</p>
   <li>On your phone, turn <strong>Wi-Fi off</strong> so it really comes in over the internet, and open your address.</li>
   <li>You should see <strong>Live view</strong> and <strong>"Enter the viewing code the photographer gave you"</strong>
     (or whatever you chose under <strong class="ui">Settings</strong> › <strong class="ui">Visitors see you as</strong>).
-    Enter the code: the live view opens. LfS Viewer now says <strong>"1 watching remotely"</strong>, and the phone
+    Enter the code: the live view opens. StudioViewer now says <strong>"1 watching remotely"</strong>, and the phone
     is listed under <strong class="ui">Viewers</strong>.</li>
   <li>Send people the address and the viewing code, ideally separately (the address by email, the code by text).
-    The QR code button in LfS Viewer is handy for someone sitting next to you.</li>
+    The QR code button in StudioViewer is handy for someone sitting next to you.</li>
 </ol>
 <div class="note"><strong>Who can do what</strong>
   Remote visitors can look, zoom and filter. They can rate and tag only if you allow it under
@@ -243,13 +243,13 @@ your viewing code to get in.</p>
 
 <h2 id="running">Keeping it running</h2>
 <ul>
-  <li>The link works only while <strong>LfS Viewer is running and your Mac is awake</strong>. For long shoots, in <strong>System Settings</strong>: on a desktop Mac, open <strong>Energy</strong> and
+  <li>The link works only while <strong>StudioViewer is running and your Mac is awake</strong>. For long shoots, in <strong>System Settings</strong>: on a desktop Mac, open <strong>Energy</strong> and
     turn on <strong>Prevent automatic sleeping when the display is off</strong>; on a laptop, open
     <strong>Battery › Options</strong>, turn on <strong>Prevent automatic sleeping on power adapter when the
     display is off</strong>, and keep it plugged in.</li>
-  <li>Sharing stays switched on: next time LfS Viewer and the viewer start, sharing comes back by itself.
-    Turn on <strong class="ui">Open LfS Viewer at login</strong> in Settings if this Mac is your studio machine.</li>
-  <li>LfS Viewer notifies you if sharing drops for more than 15 seconds, and again when it's back.</li>
+  <li>Sharing stays switched on: next time StudioViewer and the viewer start, sharing comes back by itself.
+    Turn on <strong class="ui">Open StudioViewer at login</strong> in Settings if this Mac is your studio machine.</li>
+  <li>StudioViewer notifies you if sharing drops for more than 15 seconds, and again when it's back.</li>
   <li>Switch sharing off when the shoot is over. Your address then shows a Cloudflare error page until next time.</li>
 </ul>
 
@@ -261,17 +261,17 @@ your viewing code to get in.</p>
     <tr><td>"Invalid service URL format" when adding the route</td>
       <td>Include the protocol: <code>http://localhost:8797</code>, not <code>localhost:8797</code>.</td></tr>
     <tr><td>The dashboard keeps waiting for the tunnel to connect</td>
-      <td>Paste the token into LfS Viewer and switch on <strong class="ui">Share outside the studio</strong>
+      <td>Paste the token into StudioViewer and switch on <strong class="ui">Share outside the studio</strong>
         (step 3). Running the command yourself isn't needed.</td></tr>
-    <tr><td>LfS Viewer: "Cloudflare doesn't recognise this tunnel"</td>
+    <tr><td>StudioViewer: "Cloudflare doesn't recognise this tunnel"</td>
       <td>The token is wrong, or the tunnel was deleted. Copy the install command again from the tunnel's page in
-        the dashboard, click <strong class="ui">Remove</strong> next to the token in LfS Viewer, paste, Save.</td></tr>
-    <tr><td>LfS Viewer: "Can't reach Cloudflare"</td>
+        the dashboard, click <strong class="ui">Remove</strong> next to the token in StudioViewer, paste, Save.</td></tr>
+    <tr><td>StudioViewer: "Can't reach Cloudflare"</td>
       <td>Check the Mac's internet. A strict office or venue firewall must allow outgoing connections on port 7844.</td></tr>
     <tr><td>Visitors get Cloudflare <strong>Error 1033</strong> or <strong>530</strong></td>
-      <td>The tunnel isn't connected: sharing is off, LfS Viewer isn't running, or the Mac is asleep.</td></tr>
+      <td>The tunnel isn't connected: sharing is off, StudioViewer isn't running, or the Mac is asleep.</td></tr>
     <tr><td>Visitors get <strong>502 Bad Gateway</strong></td>
-      <td>The tunnel is up but can't reach the viewer: the Service URL's port doesn't match LfS Viewer's tunnel port
+      <td>The tunnel is up but can't reach the viewer: the Service URL's port doesn't match StudioViewer's tunnel port
         (<strong class="ui">Settings</strong> › Remote sharing), or it says <code>https://</code> instead of <code>http://</code>.</td></tr>
     <tr><td>"This address is for your own network. Point the Cloudflare tunnel at…"</td>
       <td>The Service URL points at the viewer's main port (8787). Change it to the tunnel port shown in that message.</td></tr>
@@ -285,11 +285,11 @@ your viewing code to get in.</p>
       <td>The route isn't there yet, or the domain isn't Active. Check step 4, and the spelling in
         <strong class="ui">Public address</strong>.</td></tr>
     <tr><td>macOS asks about the Keychain after an update</td>
-      <td>Choose <strong>Always Allow</strong>. It's LfS Viewer reading the token you saved.</td></tr>
+      <td>Choose <strong>Always Allow</strong>. It's StudioViewer reading the token you saved.</td></tr>
   </tbody>
 </table>
 </div>
-<p>Still stuck? In the LfS Viewer window open <strong class="ui">Log</strong> in the sidebar and click
+<p>Still stuck? In the StudioViewer window open <strong class="ui">Log</strong> in the sidebar and click
 <strong class="ui">Copy Log</strong>; the token never appears in it.</p>
 
 <h2 id="extra">Extra protection, privacy and cost</h2>
@@ -297,8 +297,8 @@ your viewing code to get in.</p>
   <li><strong>Email codes instead of a viewing code (optional).</strong> Cloudflare Access can ask visitors for a
     one-time code sent to their email, letting in only addresses you list. Set it up in the dashboard under
     Zero Trust › Access › Applications (self-hosted, your address), free for small teams. Then you may turn off
-    <strong class="ui">Ask for a viewing code</strong> in LfS Viewer. Keep the viewing code unless Access is set up.</li>
-  <li><strong>See where visitors are (optional).</strong> LfS Viewer's Viewers panel shows each remote
+    <strong class="ui">Ask for a viewing code</strong> in StudioViewer. Keep the viewing code unless Access is set up.</li>
+  <li><strong>See where visitors are (optional).</strong> StudioViewer's Viewers panel shows each remote
     visitor's country. To see their city too, with a map link, turn on <strong class="ui">Add visitor location
     headers</strong> under your domain's <strong class="ui">Rules › Settings › Managed Transforms</strong>.
     It's rough: it comes from their IP address.</li>
@@ -307,15 +307,15 @@ your viewing code to get in.</p>
   <li><strong>Cost.</strong> The Cloudflare account, the tunnel and the temporary link are free. Only a domain
     costs money, if you buy one.</li>
   <li><strong>Guessing.</strong> After 20 wrong codes from anyone in 10 minutes, remote unlocking pauses for everyone
-    (devices in the studio aren't affected) and LfS Viewer notifies you. Consider a new code if that happens.</li>
+    (devices in the studio aren't affected) and StudioViewer notifies you. Consider a new code if that happens.</li>
 </ul>
 
-<footer>LfS Viewer by <a href="https://fainimade.com">Faini Made</a>. Cloudflare's dashboard changes from time
+<footer>StudioViewer by <a href="https://fainimade.com">Faini Made</a>. Cloudflare's dashboard changes from time
 to time: if a menu name here doesn't match, Cloudflare's own guide is
 <a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/get-started/create-remote-tunnel/">Create a tunnel (dashboard)</a>.</footer>
 </main>
 <script>
-// LfS Viewer opens this page as remote-setup.html?port=N: show its actual tunnel port.
+// StudioViewer opens this page as remote-setup.html?port=N: show its actual tunnel port.
 const port = new URLSearchParams(location.search).get("port");
 if (/^\d{4,5}$/.test(port || "")) {
   document.body.innerHTML = document.body.innerHTML.replaceAll("8797", port);

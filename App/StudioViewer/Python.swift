@@ -24,10 +24,10 @@ enum Python {
 }
 
 enum Paths {
-    /// ~/Library/Application Support/LfS Viewer: settings.json (access mode, PINs, codes).
+    /// ~/Library/Application Support/StudioViewer: settings.json (access mode, PINs, codes).
     /// Not next to the script, which is inside the signed app.
     nonisolated static var folder: URL {
-        URL.applicationSupportDirectory.appending(path: "LfS Viewer", directoryHint: .isDirectory)
+        URL.applicationSupportDirectory.appending(path: "StudioViewer", directoryHint: .isDirectory)
     }
     static var settings: URL { folder.appending(path: "settings.json") }
 
@@ -40,7 +40,7 @@ enum Paths {
         try FileManager.default.createDirectory(at: cloudflaredHome, withIntermediateDirectories: true)
         // A config of its own, so cloudflared never reads ~/.cloudflared. Not just a comment: an
         // "empty" config makes cloudflared log an error.
-        try Data("# LfS Viewer's own cloudflared config.\nno-autoupdate: true\n".utf8).write(to: cloudflaredConfig)
+        try Data("# StudioViewer's own cloudflared config.\nno-autoupdate: true\n".utf8).write(to: cloudflaredConfig)
     }
 
     /// Remembered so a cloudflared left behind by a crash can be stopped at the next launch.

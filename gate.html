@@ -1,8 +1,8 @@
 <!doctype html>
 <!--
-  LfS Web Viewer: the page remote visitors see first. Made by Faini Made (https://fainimade.com).
-  lfs_viewer.py serves it on the tunnel port until the viewing code is entered (see "Remote" at the
-  top of that file), naming whoever runs it as set in the LfS app ("Visitors see you as"; the
+  StudioViewer: the page remote visitors see first. Made by Faini Made (https://fainimade.com).
+  studio_viewer.py serves it on the tunnel port until the viewing code is entered (see "Remote" at the
+  top of that file), naming whoever runs it as set in the StudioViewer app ("Visitors see you as"; the
   double-braced placeholder below). The code goes to POST /api/view, which sets a cookie; then the
   viewer loads.
 -->
@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#18191c">
 <meta name="robots" content="noindex">
-<title>LfS Web Viewer</title>
+<title>StudioViewer</title>
 <style>
   :root {
     --bg: #111214;
@@ -71,7 +71,7 @@ form.onsubmit = async (e) => {
   try {
     const r = await fetch("/api/view", {
       method: "POST",
-      headers: { "X-LfS": "1", "Content-Type": "application/json" },
+      headers: { "X-StudioViewer": "1", "Content-Type": "application/json" },
       body: JSON.stringify({ code: code.value.trim() }),
     });
     if (r.ok) { location.reload(); return; }

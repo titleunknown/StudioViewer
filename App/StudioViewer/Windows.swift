@@ -28,8 +28,8 @@ final class Windows {
                 .environment(engine)
                 .environment(tunnel)
                 .environment(navigation)
-            let window = make(view, title: "LfS Viewer", size: NSSize(width: 820, height: 680), resizable: true)
-            window.setFrameAutosaveName("LfS Viewer main window")  // remembers size and place between launches
+            let window = make(view, title: "StudioViewer", size: NSSize(width: 820, height: 680), resizable: true)
+            window.setFrameAutosaveName("StudioViewer main window")  // remembers size and place between launches
             main = window
         }
         present(main!)

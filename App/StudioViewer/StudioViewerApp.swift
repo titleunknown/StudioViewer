@@ -1,10 +1,10 @@
 import SwiftUI
 
-/// LfS Viewer: a menu bar app that runs the LfS Web Viewer (lfs_viewer.py) for you.
+/// StudioViewer: a menu bar app that runs the StudioViewer (studio_viewer.py) for you.
 /// Starting, stopping, the addresses to share (with QR codes), who may rate, and notifications
 /// when something goes wrong. It lives in the menu bar; the window is optional.
 @main
-struct LfSViewerApp: App {
+struct StudioViewerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
@@ -17,14 +17,19 @@ struct LfSViewerApp: App {
 }
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    let engine = Engine()
-    let tunnel = Tunnel()
-    let navigation = Navigation()
+    let engine: Engine
+    let tunnel: Tunnel
+    let navigation: Navigation
     private let notifier = Notifier()
     private var statusMenu: StatusMenu?
 
     override init() {
+        // Before anything reads preferences: Tunnel and Navigation do as they're made.
+        Migration.run()
         UserDefaults.standard.register(defaults: Prefs.defaults)
+        engine = Engine()
+        tunnel = Tunnel()
+        navigation = Navigation()
         super.init()
     }
 
@@ -71,7 +76,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 /// The Dock icon (and the app menu) appear while a window is open, or always if the user asks.
-/// Otherwise LfS Viewer is only in the menu bar.
+/// Otherwise StudioViewer is only in the menu bar.
 enum DockIcon {
     static func watchWindows() {
         for name in [NSWindow.didBecomeKeyNotification, NSWindow.willCloseNotification] {

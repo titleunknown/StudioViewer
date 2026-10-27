@@ -1,11 +1,11 @@
 #!/bin/sh
-# Renders the icon (LfSIcon.swift) and fills the app's AppIcon asset with every macOS size.
+# Renders the icon (StudioViewerIcon.swift) and fills the app's AppIcon asset with every macOS size.
 #     App/Icon/make-iconset.sh
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
-SET="$HERE/../LfSViewer/Assets.xcassets/AppIcon.appiconset"
+SET="$HERE/../StudioViewer/Assets.xcassets/AppIcon.appiconset"
 
-swift "$HERE/LfSIcon.swift" "$HERE/icon-1024.png"
+swift "$HERE/StudioViewerIcon.swift" "$HERE/icon-1024.png"
 for size in 16 32 64 128 256 512 1024; do
   sips -z $size $size "$HERE/icon-1024.png" --out "$SET/icon-$size.png" >/dev/null
 done

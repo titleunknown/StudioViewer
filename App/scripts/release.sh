@@ -1,5 +1,5 @@
 #!/bin/bash
-# Builds a notarized, stapled LfS Viewer.app and a zip to share, the same way Xcode's Organizer
+# Builds a notarized, stapled StudioViewer.app and a zip to share, the same way Xcode's Organizer
 # does "Direct Distribution": archive, sign with the team's cloud-managed Developer ID certificate,
 # upload to Apple's notary service, wait, then export the stapled app. It uses the Apple account
 # signed in to Xcode (Settings > Accounts), so no passwords or API keys are needed here.
@@ -8,7 +8,7 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$HERE/build/release"
-ARCHIVE="$OUT/LfSViewer.xcarchive"
+ARCHIVE="$OUT/StudioViewer.xcarchive"
 TEAM="T9V5W5P5J4"
 
 [ -x "$HERE/Python/python/bin/python3" ] || { echo "Run App/scripts/fetch-python.sh first: a release must bundle Python." >&2; exit 1; }
@@ -31,7 +31,7 @@ EOF
 }
 
 echo "== Archiving (Release)"
-xcodebuild archive -project "$HERE/LfSViewer.xcodeproj" -scheme "LfS Viewer" -configuration Release \
+xcodebuild archive -project "$HERE/StudioViewer.xcodeproj" -scheme "StudioViewer" -configuration Release \
   -archivePath "$ARCHIVE" -allowProvisioningUpdates -quiet
 
 echo "== Uploading to Apple's notary service (Developer ID)"
@@ -47,11 +47,11 @@ for i in $(seq 1 60); do
   sleep 30
 done
 
-APP="$OUT/LfS Viewer.app"
+APP="$OUT/StudioViewer.app"
 VERSION=$(defaults read "$APP/Contents/Info.plist" CFBundleShortVersionString)
 echo "== Checking"
 codesign --verify --deep --strict "$APP"
 xcrun stapler validate "$APP"
 spctl -a -t exec -vv "$APP"
-ditto -c -k --keepParent "$APP" "$OUT/LfS-Viewer-$VERSION.zip"
-echo "Done: $OUT/LfS-Viewer-$VERSION.zip"
+ditto -c -k --keepParent "$APP" "$OUT/StudioViewer-$VERSION.zip"
+echo "Done: $OUT/StudioViewer-$VERSION.zip"

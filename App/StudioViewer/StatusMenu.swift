@@ -7,12 +7,12 @@ import SwiftUI
 /// bar menu turns every toggle into a checkmark and can't show custom rows. The switch rows are
 /// SwiftUI views hosted in menu items, so they update live while the menu is open.
 ///
-///     [LfS Viewer                       (on)]   Live · 4 watching · LfS Viewer - Demo
+///     [StudioViewer                       (on)]   Live · 4 watching · StudioViewer - Demo
 ///     [Share Outside the Studio         (on)]   view.fainimade.com · 2 remote
 ///     Open Viewer in Browser             ⌘O
 ///     Addresses                           ›
-///     Open LfS Viewer Window
-///     Quit LfS Viewer                    ⌘Q
+///     Open StudioViewer Window
+///     Quit StudioViewer                    ⌘Q
 final class StatusMenu: NSObject, NSMenuDelegate {
     private let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let menu = NSMenu()
@@ -46,7 +46,7 @@ final class StatusMenu: NSObject, NSMenuDelegate {
         case .failed, .reconnecting: "exclamationmark.triangle.fill"
         default: engine.phase.symbol
         }
-        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "LfS Viewer: \(engine.phase.title)")
+        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "StudioViewer: \(engine.phase.title)")
         image?.isTemplate = true
         item.button?.image = image
     }
@@ -61,9 +61,9 @@ final class StatusMenu: NSObject, NSMenuDelegate {
         menu.addItem(openItem)
         menu.addItem(addressesItem)
         menu.addItem(.separator())
-        menu.addItem(ActionItem("Open LfS Viewer Window") { Windows.shared.showMain() })
+        menu.addItem(ActionItem("Open StudioViewer Window") { Windows.shared.showMain() })
         menu.addItem(.separator())
-        menu.addItem(ActionItem("Quit LfS Viewer", key: "q") { NSApp.terminate(nil) })
+        menu.addItem(ActionItem("Quit StudioViewer", key: "q") { NSApp.terminate(nil) })
     }
 
     // The switch rows update themselves; these two follow the viewer while the menu is open,
@@ -203,7 +203,7 @@ private struct ViewerSwitchRow: View {
     let engine: Engine
 
     var body: some View {
-        MenuSwitchRow(title: "LfS Viewer", status: status, statusColor: color,
+        MenuSwitchRow(title: "StudioViewer", status: status, statusColor: color,
                       isOn: Binding { engine.isRunning } set: { $0 ? engine.start() : engine.stop() },
                       enabled: engine.phase != .stopping)
     }

@@ -4,7 +4,7 @@ import Observation
 import Security
 
 /// Remote sharing: runs cloudflared (bundled in the app) so people outside the studio can open the
-/// viewer, through the viewer's tunnel port (see "Remote" at the top of lfs_viewer.py), where they
+/// viewer, through the viewer's tunnel port (see "Remote" at the top of studio_viewer.py), where they
 /// need the viewing code first.
 ///
 /// Two ways to connect:
@@ -452,19 +452,31 @@ nonisolated struct TunnelToken {
 
 /// The tunnel token, kept in the login Keychain.
 nonisolated enum Keychain {
-    private static let base: [String: Any] = [
-        kSecClass as String: kSecClassGenericPassword,
-        kSecAttrService as String: "Faini-Made.LfS-Viewer",
-        kSecAttrAccount as String: "cloudflare-tunnel-token",
-    ]
+    private static let base = item(service: "Faini-Made.StudioViewer")
+    /// Where the app kept it as LfS Viewer (see Migration).
+    private static let legacy = item(service: Migration.oldBundleID)
 
+    private static func item(service: String) -> [String: Any] {
+        [kSecClass as String: kSecClassGenericPassword,
+         kSecAttrService as String: service,
+         kSecAttrAccount as String: "cloudflare-tunnel-token"]
+    }
+
+    /// Read when sharing starts, off the main thread (macOS may ask first). A token saved by
+    /// LfS Viewer is copied over the first time; its own entry stays, for the old app (see Migration).
     static var tunnelToken: String? {
-        var query = base
+        if let token = read(base) { return token }
+        guard let token = read(legacy), saveTunnelToken(token) else { return nil }
+        return token
+    }
+
+    private static func read(_ item: [String: Any]) -> String? {
+        var query = item
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
-        var item: CFTypeRef?
-        guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
-              let data = item as? Data else { return nil }
+        var result: CFTypeRef?
+        guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
+              let data = result as? Data else { return nil }
         return String(data: data, encoding: .utf8)
     }
 
@@ -475,7 +487,7 @@ nonisolated enum Keychain {
         guard let token else { return true }
         var item = base
         item[kSecValueData as String] = Data(token.utf8)
-        item[kSecAttrLabel as String] = "LfS Viewer: Cloudflare tunnel token"
+        item[kSecAttrLabel as String] = "StudioViewer: Cloudflare tunnel token"
         return SecItemAdd(item as CFDictionary, nil) == errSecSuccess
     }
 }

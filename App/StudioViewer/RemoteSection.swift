@@ -183,7 +183,7 @@ struct RemoteSection: View {
                 through all of it, including signing up and moving or buying a domain.
 
                 1. In the Cloudflare dashboard, open **Networking › Tunnels**, select **Create a tunnel**, \
-                name it (for example "LfS Viewer") and select **Create Tunnel**.
+                name it (for example "StudioViewer") and select **Create Tunnel**.
                 2. Choose **macOS**, copy the install command shown (don't run it) and paste it into \
                 **Tunnel token** above. Save.
                 3. Make sure a viewing code is saved, switch on **Share outside the studio**, and once the \
