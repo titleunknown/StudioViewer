@@ -133,6 +133,7 @@ struct SettingsView: View {
 
             Section {
                 Toggle("Notify me when something goes wrong", isOn: $notify)
+                    .onChange(of: notify) { _, on in if on { Notifier.askPermission() } }
             } header: {
                 Text("Notifications")
             } footer: {

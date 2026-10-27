@@ -12,7 +12,7 @@ final class UpdateChecker {
     /// The public releases repo. While it doesn't exist (or is private) GitHub answers 404, which lands
     /// in the same "couldn't check right now" branch as being offline, so this is safe to ship before
     /// the repo goes public, and starts working the moment it does, with no code change.
-    /// Releases are tagged with the version ("v0.2" or "0.2") and carry the notarized zip.
+    /// Releases are tagged with the version ("v1.0" or "1.0") and carry the notarized zip.
     static let repo = "titleunknown/StudioViewer"
 
     /// Where "Download…" sends the user to get the new version.

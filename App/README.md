@@ -214,12 +214,12 @@ What the first run (version 0.1, 2026-10-20) showed:
 
 The About panel's **Check for Updates…** reads the latest release of the GitHub repo
 `titleunknown/StudioViewer` (`UpdateChecker.repo`; change it there if the repo gets another name). Until
-that repo exists and is public, the button just says it couldn't check. For each release:
+the repo is public, the button just says it couldn't check. For each release:
 
-1. Bump `MARKETING_VERSION` (for example 0.2) and run `App/scripts/release.sh`.
-2. On GitHub, create a release tagged `v0.2` (or `0.2`) and attach `StudioViewer-0.2.zip` from
-   `App/build/release/`. Tags with `-beta` count as their base version, so `v0.3-beta.1` never
-   reads as newer than 0.3.
+1. Bump `MARKETING_VERSION` (for example 1.1) and run `App/scripts/release.sh`.
+2. On GitHub, create a release tagged `v1.0` (or `1.0`) and attach `StudioViewer-1.0.zip` from
+   `App/build/release/`. Tags with `-beta` count as their base version, so `v1.1-beta.1` never
+   reads as newer than 1.1.
 3. Anyone who presses **Check for Updates…**, or has the daily check on, is offered **Download…**,
    which opens the repo's releases page.
 

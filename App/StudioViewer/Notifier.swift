@@ -20,8 +20,15 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             UNNotificationCategory(identifier: Self.crashCategory, actions: [restart], intentIdentifiers: []),
         ])
         if UserDefaults.standard.bool(forKey: Prefs.notify) {
-            center.requestAuthorization(options: [.alert, .sound]) { _, _ in }
+            Self.askPermission()
         }
+    }
+
+    /// Has macOS ask whether StudioViewer may show notifications (only the first time; after that
+    /// it answers from System Settings). At launch when they're on, and when they're switched on in
+    /// Settings, so turning them on later still gets asked.
+    static func askPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
 
     func handle(_ alert: Engine.Alert) {
