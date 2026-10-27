@@ -52,9 +52,9 @@ struct AboutView: View {
 
             Link("by Faini Made", destination: URL(string: "https://fainimade.com")!)
                 .help("fainimade.com")
-            Link("Privacy Policy", destination: URL(string: "https://fainimade.com/privacy")!)
+            Link("Privacy Policy", destination: URL(string: "https://github.com/titleunknown/StudioViewer/blob/main/PRIVACY.md")!)  // PRIVACY.md in the repo
                 .font(.subheadline)
-                .help("fainimade.com/privacy")
+                .help("What StudioViewer keeps and when it goes online")
 
             // StudioViewer is free: this is the way to support it (the README has the same link).
             Text("StudioViewer is free. If it earns its keep on your shoots:")
@@ -116,7 +116,10 @@ struct AboutView: View {
             Text("Not endorsed by or affiliated with Capture One A/S.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-            Text("© 2026 Faini Made Inc. All Rights Reserved")
+            // The GPL's "appropriate legal notices": copyright, no warranty, and where the licence is.
+            Text("© 2026 Faini Made Inc. Free software under the [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.html), with no warranty.")
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }

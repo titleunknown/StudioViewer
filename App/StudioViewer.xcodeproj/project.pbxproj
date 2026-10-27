@@ -246,7 +246,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = StudioViewer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Faini Made Inc. All Rights Reserved";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Faini Made Inc. Licensed under the GNU GPL v3.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -280,7 +280,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = StudioViewer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Faini Made Inc. All Rights Reserved";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Faini Made Inc. Licensed under the GNU GPL v3.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

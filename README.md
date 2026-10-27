@@ -28,7 +28,9 @@ you can [buy me a coffee](#support).*
 11. [If something goes wrong](#if-something-goes-wrong)
 12. [Good to know](#good-to-know)
 13. [For the technically minded](#for-the-technically-minded)
-14. [Support](#support)
+14. [Privacy](#privacy)
+15. [Licence](#licence)
+16. [Support](#support)
 
 ---
 
@@ -587,6 +589,8 @@ The double-click launcher passes options through too. For example, run
 | `settings.json` | For the launcher and Terminal: your **Network access** choice, PIN, wrong-PIN limits and remote viewing code. Created on first run; delete it to reset to "View only". The app keeps its own, in `~/Library/Application Support/StudioViewer/`. |
 | `tests/` | The engine's tests and a fake Capture One (see `App/README.md`, "Testing the engine"). |
 | `README.md` | This guide. |
+| `PRIVACY.md` | What StudioViewer keeps and when it goes online. |
+| `LICENSE` | The GNU GPL v3. |
 
 ### How it works
 
@@ -643,6 +647,27 @@ The viewer introduces itself to Capture One as the Live for Studio iPad app, ver
 If a Capture One update rejects that ("refused the connection" in Terminal), set `APP_VERSION`
 near the top of `studio_viewer.py` to the current version of the Live for Studio iPad app (shown
 in the App Store), then start the viewer again.
+
+---
+
+## Privacy
+
+StudioViewer has no accounts, analytics or ads, and sends nothing to Faini Made. It keeps your
+settings on your Mac, keeps track of who's watching for the Viewers panel, and only goes online for
+remote sharing (through Cloudflare) and to check GitHub for updates. The details are in
+[PRIVACY.md](PRIVACY.md), which the app's **About › Privacy Policy** link opens.
+
+---
+
+## Licence
+
+StudioViewer is free software: you can redistribute it and/or modify it under the terms of the
+[GNU General Public License, version 3](LICENSE) (GPL-3.0), as published by the Free Software
+Foundation. Anyone may use it, including commercially; if you pass on a changed version, it must
+stay under the same licence, with its source. It comes with no warranty.
+
+© 2026 Faini Made Inc. The app also includes cloudflared (Apache License 2.0) and Python (PSF
+License Agreement) under their own licences, shown in **About › Acknowledgments…**
 
 ---
 
