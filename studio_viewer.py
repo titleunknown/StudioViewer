@@ -3,7 +3,7 @@
 
 Made by Faini Made (https://fainimade.com). Not affiliated with Capture One.
 Tested with Capture One 16.7.3 and the Live for Studio iPad app 1.4.2.3.
-Needs only Python 3 (no extra packages). See README.md for the user guide.
+Needs only Python 3 (no extra packages). See docs/USER-GUIDE.md for the user guide.
 
 Capture One's Live for Studio server is a plain-HTTP API on a random port,
 advertised over Bonjour. This script finds it, opens its own session, and

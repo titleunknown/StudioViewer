@@ -15,3 +15,6 @@ xcuserdata/
 
 # Claude Code's local config (dev server for the browser pane).
 /.claude/
+
+# Full-size screenshots; the README uses the web-sized copies in docs/images/.
+/Screenshots/

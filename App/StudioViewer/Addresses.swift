@@ -61,7 +61,7 @@ struct QRWindow: View {
     @State private var fullscreen = false
     @State private var copied = false
 
-    /// Fullscreen mode is the clean client view (see the README); ?fullscreen opens straight into it.
+    /// Fullscreen mode is the clean client view (see docs/USER-GUIDE.md); ?fullscreen opens straight into it.
     private var shown: String { fullscreen ? url + "/?fullscreen" : url }
 
     var body: some View {
